@@ -21,10 +21,15 @@
   },
   "homepage": "https://github.com/vishakhapatil02/Movie-recommendation-system#readme",
   "dependencies": {
+    "body": "^5.1.0",
+    "cookie": "^1.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "i": "^0.3.7",
+    "install": "^0.13.0",
     "mysql": "^2.18.1",
-    "mysql2": "^3.14.1"
+    "mysql2": "^3.14.1",
+    "parser": "^0.1.4"
   }
 }
