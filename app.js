@@ -10,4 +10,4 @@ app.get('/', (req, res) => {
     res.send('welcome');
 });
 
-module.export=app;
+module.exports=app;
