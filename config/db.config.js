@@ -1,5 +1,4 @@
 let mysql =require("mysql2");
-
 let conn=mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -7,8 +6,15 @@ let conn=mysql.createConnection({
     database: "MovieRecommendation"
 });
 
-conn.connect((err)) => {
+conn.connect((err) => {
     if (err){
-        console.log("")
+        console.log("Database is not connected");
     }
-}
+    else{
+        console.log("Database is connected");
+    }
+});
+
+module.exports = conn;
+
+
