@@ -15,4 +15,6 @@ app.use(express.static('public'));
 const authroutes = require('./routes/auth.routes');
 app.use('/', authroutes);
 
+
+
 module.exports=app;
