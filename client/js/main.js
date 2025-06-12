@@ -17,3 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error("Error fetching recommendations:", error));
 });
+
+// js/main.js
+document.querySelector('.btn').addEventListener('click', () => {
+  alert('Explore feature coming soon!');
+});
+

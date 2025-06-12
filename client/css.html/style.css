@@ -1,0 +1,40 @@
+ /* style.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  color: #fff;
+  background-image: url('backgroundblur.jpg');
+}
+
+/* Background Image */
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url('backgroundblur.jpg'); /* Check path here */
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.3) blur(2px);
+  z-index: -1;
+}
+
+
+ 
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 0.9rem;
+  color: #ccc;
+}
