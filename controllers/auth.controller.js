@@ -15,6 +15,15 @@ exports.getregister = (req, res) => {
   res.render('register');
 };
 
+//home page
+exports.gethome = (req, res) => {
+  res.render('home');
+};
+// posthome logic (example)
+exports.posthome = (req, res) => {
+  res.send("Posted to home!");
+};
+
 // Register logic
 exports.postregister = (req, res) => {
   const { username, email, password } = req.body;
