@@ -1,5 +1,6 @@
 let app = require('./app');
 let dotenv = require('dotenv');
+
 dotenv.config();
 
 require('./config/db.config.js');
