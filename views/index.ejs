@@ -4,26 +4,122 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Movie Recommendation System</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      width: 100%;
+      font-family: 'Roboto', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+      color: #fff;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-image: url('/images/backgroundblur.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: none;
+      z-index: -2;
+    }
+
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 2rem 4rem;
+      text-align: right;
+    }
+
+    .content {
+      max-width: 700px;
+    }
+
+    .heading-box {
+      display: inline-block;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.953), rgba(255, 88, 51, 0.729));
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+    }
+
+    .main-title {
+      font-size: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .highlight {
+      color: #ff5733;
+    }
+
+    .description {
+      font-size: 1.2rem;
+      margin-top: 1.5rem;
+      color: #e0e0e0;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.8rem;
+      background-color: #04e32daf;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #0b9212;
+    }
+
+    footer {
+      text-align: center;
+      padding: 0.2rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #ccc;
+    }
+  </style>
 </head>
+
 <body>
   <div class="background"></div>
 
-   
-
   <main class="hero">
     <div class="content">
-       
-      <h1 class="main-title"><span class="highlight">MOVIE</span> Recommendation System</h1>
-      <p class="description">Get personalized movie suggestions powered by machine learning algorithms. Dive into a smarter cinema experience!</p>
-      <a href="#" class="btn">Explore Now</a>
+      <div class="heading-box">
+        <h1 class="main-title"><span class="highlight">Movie</span> Recommendation System</h1>
+      </div>
+      <p class="description">Get personalized movie suggestions powered by FILMFussion. Dive into a smarter cinema experience!
+        </p>
+      </p>
+       <a href="/home" class="btn">GO TO HOME</a>
+
     </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 TechVidvan | All Rights Reserved</p>
+    <p>&copy; 2025 shraddhathorhate@gmail.com | vishakhapatil0227@gmail.com</p>
   </footer>
 
-  <script src="js/main.js"></script>
+  <script src="/js/main.js"></script>
 </body>
 </html>

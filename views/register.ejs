@@ -1,31 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+      padding: 20px;
+    }
+
+    .register-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .register-box h2 {
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      color: #ffeeba;
+    }
+
+    .textbox {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .textbox input {
+      padding: 12px 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transition: 0.3s ease;
+    }
+
+    .textbox input::placeholder {
+      color: #eee;
+    }
+
+    .textbox input:focus {
+      background: rgba(255, 255, 255, 0.2);
+      outline: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #ffeeba;
+      color: #333;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #ffc107;
+    }
+
+    p {
+      margin-top: 15px;
+      font-size: 0.95rem;
+    }
+
+    a {
+      color: #ffeeba;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .register-box {
+        padding: 30px 20px;
+      }
+
+      .btn {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="register-box">
-            <h2>Register</h2>
-            <form action="/register" method="POST">
-                <div class="textbox">
-                    <input type="text" name="username" placeholder="Username" required>
-                    <input type="text" name="email" placeholder="Email" required>
-                    <input type="password" name="password" placeholder="Password" required>
-               
-                <button type="submit" class="btn">Register</button>
-              </div>
-            </form>
-            <p>Already have an account? <a href="/login">Login here</a></p>
+  <div class="container">
+    <div class="register-box">
+      <h2>Register</h2>
+      <form action="/register" method="POST">
+        <div class="textbox">
+          <input type="text" name="username" placeholder="Username" required>
+          <input type="text" name="email" placeholder="Email" required>
+          <input type="password" name="password" placeholder="Password" required>
         </div>
+        <button type="submit" class="btn">Register</button>
+      </form>
+      <p>Already have an account? <a href="/login">Login here</a></p>
     </div>
-    
+  </div>
 </body>
 </html>
-
-
