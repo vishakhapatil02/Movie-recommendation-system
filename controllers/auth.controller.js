@@ -15,15 +15,26 @@ exports.getregister = (req, res) => {
   res.render('register');
 };
 
+//home page
+exports.gethome = (req, res) => {
+  res.render('home');
+};
+// posthome logic (example)
+exports.posthome = (req, res) => {
+  res.send("Posted to home!");
+};
+
 // Register logic
 exports.postregister = (req, res) => {
   const { username, email, password } = req.body;
-  const sql = "INSERT INTO userinfo (user_name, user_email, user_password) VALUES (?, ?, ?)";
+  console.log("from data received:", username, email, password);
+  const sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
   db.query(sql, [username, email, password], (err) => {
     if (err) {
-      console.error(err);
+      console.error("DB error:", err);
       return res.send("Registration failed");
     }
+                                                                                   
     res.redirect('/login');
   });
 };
@@ -31,13 +42,18 @@ exports.postregister = (req, res) => {
 // Login logic
 exports.postlogin = (req, res) => {
   const { email, password } = req.body;
-  const sql = "SELECT * FROM userinfo WHERE user_email = ? AND user_password = ?";
+  const sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+
   db.query(sql, [email, password], (err, results) => {
     if (err) return res.send("Error occurred");
     if (results.length > 0) {
-      res.redirect('/dashboard');
+       res.send("Invalid email or password");
+     
     } else {
-      res.send("Invalid email or password");
+      res.redirect('/index');
     }
   });
-};
+}; 
+
+
+
