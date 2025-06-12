@@ -1,12 +1,16 @@
-let express = require('express');
-let router = express.Router();
-let authController = require('../controllers/auth.controller');
+const express = require('express');
+const router = express.Router();
+const authController = require('../controllers/auth.controller');
 
+// r 'index.ejs'
 router.get('/', authController.getdashboard);
+
+// Auth pages
 router.get('/login', authController.getlogin);
 router.get('/register', authController.getregister);
 
-router.post('/login', authController.postlogin); // Lowercase "l"
-router.post('/register', authController.postregister); // Lowercase "r"
+// Form submissions
+router.post('/login', authController.postlogin);
+router.post('/register', authController.postregister);
 
 module.exports = router;
