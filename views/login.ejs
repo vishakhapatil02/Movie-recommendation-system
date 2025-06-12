@@ -1,27 +1,130 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Movie</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" heref="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Movie</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .login-box h2 {
+      font-size: 2rem;
+      margin-bottom: 25px;
+      color: #00ffd5;
+    }
+
+    .textbox {
+      margin-bottom: 20px;
+    }
+
+    .textbox input {
+      width: 100%;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transition: 0.3s ease;
+    }
+
+    .textbox input::placeholder {
+      color: #ddd;
+    }
+
+    .textbox input:focus {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #00ffd5;
+      color: #000;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #00c8a2;
+    }
+
+    .register-link {
+      margin-top: 15px;
+      font-size: 0.95rem;
+    }
+
+    .register-link a {
+      color: #00ffd5;
+      text-decoration: none;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 450px) {
+      .login-box {
+        padding: 30px 20px;
+      }
+
+      .btn {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="login-box">
-            <h2>Login</h2>
-            <form action="/login" method="POST">
-                <div class="textbox">
-                    <input type="text" name="username" placeholder="Username" required>
-                </div>
-                <div class="textbox">
-                    <input type="password" name="password" placeholder="Password" required>
-                </div>
-                <button type="submit" class="btn">Login</button>
-            </form>
-            <p class="register-link">Don't have an account? <a href="/register">Register here</a></p>
+  <div class="container">
+    <div class="login-box">
+      <h2>Login</h2>
+      <form action="/login" method="POST">
+        <div class="textbox">
+          <input type="text" name="username" placeholder="Username" required>
         </div>
+        <div class="textbox">
+          <input type="password" name="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn">Login</button>
+      </form>
+      <p class="register-link">Don't have an account? <a href="/register">Register here</a></p>
+    </div>
+  </div>
 </body>
 </html>
