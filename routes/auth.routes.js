@@ -1,12 +1,12 @@
-let express = reqiure('express');
-let router = express.router();
+let express = require('express');
+let router = express.Router();
 let authController = require('../controllers/auth.controller');
 
-router.get('/', auth.Controller.getdashboard);
+router.get('/', authController.getdashboard);
 router.get('/login', authController.getlogin);
 router.get('/register', authController.getregister);
 
-router.post('/login', authController.postlogin);
-router.post('/register',  authController.postregister);
+router.post('/login', authController.postlogin); // Lowercase "l"
+router.post('/register', authController.postregister); // Lowercase "r"
 
 module.exports = router;
