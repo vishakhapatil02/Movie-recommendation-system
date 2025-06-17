@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/auth.controller');
+const authController = require('../controllers/auth.controller'); 
 
-// r 'index.ejs'
-router.get('/', authController.getdashboard);
 
-// Auth pages
+// routes
+
+router.get('/home', authController.gethome);
 router.get('/login', authController.getlogin);
 router.get('/register', authController.getregister);
-router.get('/home', authController.gethome);
+router.get('/', authController.getdashboard);
 
-// Form submissions
+// POST routes
 router.post('/login', authController.postlogin);
 router.post('/register', authController.postregister);
 router.post('/home', authController.posthome);

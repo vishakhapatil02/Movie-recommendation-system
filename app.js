@@ -1,22 +1,28 @@
-let express = require('express');
-let cors = require('cors');
-let path = require('path');
-let app = express();
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 
+const authroutes = require('./routes/auth.routes');
+const movieRoutes = require('./routes/movie.routes'); 
+
+const app = express();
+
+// Middleware
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Corrected view engine setup
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Views
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Static files (e.g., CSS)
-app.use(express.static('public'));
-
-//  Route setup
-const authroutes = require('./routes/auth.routes');
+// Routes
 app.use('/', authroutes);
+app.use('/movies', movieRoutes); 
 
 module.exports = app;
-
