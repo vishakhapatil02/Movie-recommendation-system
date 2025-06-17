@@ -1,0 +1,18 @@
+.admin-body {
+  background-color: #f4f4f4;
+  font-family: 'Roboto', sans-serif;
+}
+
+.sidebar {
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 1rem;
+  border-right: 2px solid #1e2746;
+}
+
+.sidebar a:hover {
+  background-color: #04e32daf;
+  color: #000;
+}
