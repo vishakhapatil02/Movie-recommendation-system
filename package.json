@@ -8,8 +8,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["movies", "recommendation", "Node.js", "express"],
+  "author": "shraddha",
   "license": "ISC",
   "description": "# Movie-recommendation-system",
   "repository": {
@@ -21,9 +21,7 @@
   },
   "homepage": "https://github.com/vishakhapatil02/Movie-recommendation-system#readme",
   "dependencies": {
-    "bcrypt": "^6.0.0",
     "body": "^5.1.0",
-    "body-parser": "^2.2.0",
     "cookie": "^1.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
