@@ -1,0 +1,135 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MovieMatch Dashboard</title>
+
+  <!-- Bootstrap and Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f6f9fc, #dbeafe);
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 70px;
+      width: 100%;
+      background: linear-gradient(to right, #93c5fd, #bfdbfe);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #1d4ed8;
+    }
+
+    .navbar .nav-menu {
+      display: flex;
+      gap: 25px;
+    }
+
+    .navbar .nav-menu a {
+      display: flex;
+      color: #1f2937;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .navbar .nav-menu a:hover {
+      background-color: #2563eb;
+      color: #fff;
+    }
+
+    .navbar .profile i {
+      font-size: 1.5rem;
+      margin-left: 18px;
+      color: #1f2937;
+      cursor: pointer;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 100px 40px 40px 40px; /* Space for navbar */
+    }
+
+    @media (max-width: 768px) {
+      .navbar .nav-menu {
+        flex-direction: column;
+        gap: 10px;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: #bfdbfe;
+        padding: 10px 20px;
+        display: none;
+      }
+
+      .navbar .nav-menu.active {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar with Menu -->
+  <div class="navbar">
+    <div class="logo">MovieMatch</div>
+    <div class="nav-menu" id="navMenu">
+      <a href="#" onclick="loadContent('movies')">🎥 Movies</a>
+      <a href="#" onclick="loadContent('watchlist')">🗓 Watchlist</a>
+      <a href="#" onclick="loadContent('ratings')">⭐ Ratings & Reviews</a>
+      <a href="#" onclick="loadContent('profile')">👤 User Profile</a>
+      <a href="/logout">🚪 Logout</a>
+    </div>
+    <div class="profile">
+      <i class="bi bi-bell"></i>
+      <i class="bi bi-person-circle"></i>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" id="mainContent">
+    <h2 class="mb-3">Welcome to <span style="color:#2563eb;">MovieMatch</span></h2>
+    <p class="lead">Select an option from the navbar to get started.</p>
+  </div>
+
+  <!-- JavaScript for dynamic content loading -->
+  <script>
+    function loadContent(view) {
+      fetch(`/partials/${view}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Page not found");
+          return res.text();
+        })
+        .then(html => {
+          document.getElementById('mainContent').innerHTML = html;
+        })
+        .catch(err => {
+          document.getElementById('mainContent').innerHTML = `<p class="text-danger">Error loading ${view}.</p>`;
+        });
+    }
+  </script>
+
+</body>
+</html>

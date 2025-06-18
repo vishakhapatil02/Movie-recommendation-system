@@ -3,124 +3,526 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Movie Recommendation System</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
-
+  <title>FilmFusion Dashboard</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+  
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body, html {
-      height: 100%;
-      width: 100%;
+    @import url('https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Hand+Pre:wght@400..700&family=Outfit:wght@100..900&display=swap');
+    body {
       font-family: 'Roboto', sans-serif;
-      overflow-x: hidden;
-      position: relative;
-      color: #fff;
+      background: linear-gradient(135deg, #a1bbd5,#1e2746);
+      color: #eee;
+      margin: 10;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .background {
+    .top-navbar {
+      height: 70px;
+       background: linear-gradient(135deg, #e83f36f1,#1e2746);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
       position: fixed;
       top: 0;
       left: 0;
-      height: 100%;
-      width: 100%;
-      background-image: url('/images/backgroundblur.jpg');
-      background-size: cover;
-      background-position: center;
-      filter: none;
-      z-index: -2;
+      right: 0;
+      z-index: 1000;
     }
 
-    .hero {
-      min-height: 90vh;
+    .top-navbar img {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      padding: 2rem 4rem;
-      text-align: right;
+      gap: 0.5rem;
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      border: 2px solid #04e32daf;
+      transition: transform 0.3s;
     }
 
-    .content {
-      max-width: 700px;
+    .brand-logo:hover {
+      transform: scale(1.1);
     }
 
-    .heading-box {
-      display: inline-block;
-      background: linear-gradient(to right, rgba(0, 0, 0, 0.953), rgba(255, 88, 51, 0.729));
-      padding: 1rem 1.5rem;
-      border-radius: 10px;
+    .brand-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #f2f5f3;
+      margin: 0;
+    }
+    .brand-title span {
+      color:  black;
+      font-weight: 800;
     }
 
-    .main-title {
-      font-size: 3rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+    .navbar-buttons .btn {
+      margin-left: 0.5rem;
     }
 
-    .highlight {
-      color: #ff5733;
-    }
-
-    .description {
-      font-size: 1.2rem;
-      margin-top: 1.5rem;
-      color: #e0e0e0;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 0.8rem 1.8rem;
-      background-color: #04e32daf;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 1.5rem;
-      transition: background 0.3s ease;
-    }
-
-    .btn:hover {
-      background-color: #0b9212;
-    }
-
-    footer {
+    .sidebar {
+      width: 220px;
+      background-image: url("/images/background22.jpg");
+      background-repeat: no-repeat;
+      position: fixed;
+      top: 70px;
+      bottom: 0;
+      left: 0;
+      padding-top: 1rem;
       text-align: center;
-      padding: 0.2rem;
-      background-color: rgba(0, 0, 0, 0.6);
-      color: #ccc;
+      overflow-y: auto;
     }
+
+    .sidebar nav a {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: #dddddd;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .sidebar nav a:hover{
+      background: #04e32daf;
+      color: #000;
+    }
+
+    .main-content {
+      margin-top: 90px;
+      margin-left: 220px;
+      /*padding: 1rem;*/
+     /* padding-top: 0.5rem;*/
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+      background: #f5f8fa;
+      color: #333;
+    }
+
+    .content-section {
+      display: none;
+    }
+    .category-heading {
+  color: #121b33;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border-left: 6px solid #04e32daf;
+  padding-left: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.card-img-top {
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.card-img-top:hover {
+  transform: scale(1.05);
+}
+
+.category-block {
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
   </style>
 </head>
-
 <body>
+   <div class="top-navbar">
+    <img src="/images/logofilmfussion.webp">
+    <div class="brand-title"><i>FILM<span style="color:rgb(20, 114, 25); font-weight:bold;">Fussion</i></span></div>
+    <div><a href="/login" class="btn btn-outline-light" style="margin-left: 1000px;">Login</a></div>
+     <div><a href="/register" class="btn btn-outline-light">Register</a></div>
+   </div>
   
-  <div class="background"></div>
+  
 
-  <main class="hero">
-    <div class="content">
-      <div class="heading-box">
-        <h1 class="main-title"><span class="highlight">Movie</span> Recommendation System</h1>
+  
+
+  <main class="main-content">
+    <!-- Slideshow Section -->
+    <section id="home" class="content-section" style="display: block;">
+      <div id="slideshow" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active" height="500px" margin-top="30px" object-fit="cover">
+            <img src="/images/movieposter1.webp" class="d-block w-100" style="height: 582px;  ;">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster27.jpg" class="d-block w-100" style="height: 582px; ">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster29.jpg" class="d-block w-100" style="height: 582px;  ">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster30.webp" class="d-block w-100" style="height: 582px;  ;">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster25.jpg" class="d-block w-100" style="height: 582px;  ">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster24.webp" class="d-block w-100" style="height: 582px;  ">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster23.avif" class="d-block w-100" style="height: 582px;  ">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster26.webp" class="d-block w-100" style="height: 582px;  ">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster41.webp" class="d-block w-100" style="height: 582px;  ">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster42.jpg" class="d-block w-100" style="height: 582px;  ">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster44.webp" class="d-block w-100" style="height: 582px;  ">
+          </div>
+          <div class="carousel-item">
+            <img src="/images/poster46.jpg" class="d-block w-100" style="height: 582px; ;">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#slideshow" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#slideshow" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
       </div>
-      <p class="description">Get personalized movie suggestions powered by FILMFussion. Dive into a smarter cinema experience!
-        </p>
-      </p>
-       <a href="/home" class="btn">GO TO HOME</a>
+    
+      <section id="home" class="content-section" style="display: block;">
+       <!-- Movie Categories with Posters -->
+<div class="movie-categories mt-5">
 
+  <h1 style="margin-left: 30px;"><b>Explore By Categories</b></h1>
+
+  <!-- Adventure Movies -->
+  <div class="category-block mb-5, mt-5">
+    <h3 class="category-heading">Adventure Movies</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/ad1.jpg" class="card-img-top" alt="Adventure 1" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/kesariposter.jpg" class="card-img-top" alt="Adventure 2" style="width: 300px; height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/ad3.jpg" class="card-img-top" alt="Adventure 3" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/ad5.webp" class="card-img-top" alt="Adventure 4" style="height: 400px;">
+        </div>
+        
+      </div>
     </div>
+  </div>
+
+  <!-- Comedy Movies -->
+  <div class="category-block mb-5, mt-5">
+    <h3 class="category-heading">Comedy Movies</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/cd1.jpg" class="card-img-top" alt="Comedy 1" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/cd2.jpg" class="card-img-top" alt="Comedy 2" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/cd3.webp" class="card-img-top" alt="Comedy 3" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/cd4.jpg" class="card-img-top" alt="Comedy 4" style="height: 400px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horror Movies -->
+  <div class="category-block mb-5, mt-5">
+    <h3 class="category-heading">School-Life Movies</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/sl1.jpg" class="card-img-top" alt="Horror 1" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/sl2.jpg" class="card-img-top" alt="Horror 2" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/sl3.jpg" class="card-img-top" alt="Horror 3" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/sl4.jpg" class="card-img-top" alt="Horror 4" style="height: 400px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horror Movies -->
+  <div class="category-block mb-5, mt-5">
+    <h3 class="category-heading">English Movies</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/eg1.jpg" class="card-img-top" alt="Horror 1" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/eg2.avif" class="card-img-top" alt="Horror 2" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/eg3.jpg" class="card-img-top" alt="Horror 3" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/eg4.jpg" class="card-img-top" alt="Horror 4" style="height: 400px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Horror Movies -->
+  <div class="category-block mb-5, mt-5">
+    <h3 class="category-heading">South Movies</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/st1.webp" class="card-img-top" alt="Horror 1" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/st2.webp" class="card-img-top" alt="Horror 2" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/st3.jpg" class="card-img-top" alt="Horror 3" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/st4.jpg" class="card-img-top" alt="Horror 4" style="height: 400px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horror Movies -->
+  <div class="category-block mb-5, mt-5">
+    <h3 class="category-heading">Marathi Movies</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/mm1.avif" class="card-img-top" alt="Horror 1" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/jaaranposter.jpg" class="card-img-top" alt="Horror 2" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/mm3.jpg" class="card-img-top" alt="Horror 3" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/mm4.jpg" class="card-img-top" alt="Horror 4" style="height: 400px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horror Movies -->
+  <div class="category-block mb-5, mt-5">
+    <h3 class="category-heading">Tamil Movies</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/tm1.jpg" class="card-img-top" alt="Horror 1" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/tm2.webp" class="card-img-top" alt="Horror 2" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/tm3.jpg" class="card-img-top" alt="Horror 3" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/tm4.webp" class="card-img-top" alt="Horror 4" style="height: 400px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- Horror Movies -->
+  <div class="category-block mb-5, mt-5">
+    <h3 class="category-heading">Cartoons</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/cc1.jpg" class="card-img-top" alt="Horror 1" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/cc2.jpg" class="card-img-top" alt="Horror 2" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/cc3.jpg" class="card-img-top" alt="Horror 3" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/cc4.png" class="card-img-top" alt="Horror 4" style="height: 400px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horror Movies -->
+  <div class="category-block mb-5, mt-5">
+    <h3 class="category-heading">Horror Movies</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/maaposter.jpg" class="card-img-top" alt="Horror 1" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/hh2.jpg" class="card-img-top" alt="Horror 2" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/hh3.webp" class="card-img-top" alt="Horror 3" style="height: 400px;">
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/images/hh4.jpg" class="card-img-top" alt="Horror 4" style="height: 400px;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add More Sections (Action, Marathi, South, etc.) similarly -->
+</div>
+
+      </section>
+    </section>
+
+     
+
+    <!-- USERS -->
+    <section id="users" class="content-section">
+      <h4>Users</h4>
+      <table class="table table-striped">
+        <thead class="table-dark"><tr><th>ID</th><th>Name</th><th>Email</th></tr></thead>
+        <tbody><tr><td>1</td><td>Alice</td><td>alice@example.com</td></tr></tbody>
+      </table>
+    </section>
+
+    <!-- RATINGS -->
+    <section id="ratings" class="content-section">
+      <h4>Ratings & Reviews</h4>
+      <input type="text" class="form-control mb-3" placeholder="Search by username...">
+      <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ratingTab">Ratings</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#reviewTab">Reviews</a></li>
+      </ul>
+      <div class="tab-content mt-3">
+        <div class="tab-pane fade show active" id="ratingTab">
+          <table class="table"><thead><tr><th>User</th><th>Movie</th><th>Rating</th></tr></thead><tbody><tr><td>Alice</td><td>Movie A</td><td>4</td></tr></tbody></table>
+        </div>
+        <div class="tab-pane fade" id="reviewTab">
+          <table class="table"><thead><tr><th>User</th><th>Movie</th><th>Review</th></tr></thead><tbody><tr><td>Bob</td><td>Movie B</td><td>Excellent!</td></tr></tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section id="admin" class="content-section">
+      <h4>Admin Profile</h4>
+      <p>Name: Admin</p>
+      <p>Email: admin@filmfusion.com</p>
+    </section>
   </main>
 
-  <footer>
-    <p>&copy; 2025 shraddhathorhate@gmail.com | vishakhapatil0227@gmail.com</p>
-  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const menus = document.querySelectorAll('.menu');
+    const sections = document.querySelectorAll('.content-section');
+    menus.forEach(menu => menu.addEventListener('click', e => {
+      e.preventDefault();
+      menus.forEach(m => m.classList.remove('active'));
+      menu.classList.add('active');
+      sections.forEach(sec => sec.style.display = sec.id === menu.dataset.target ? 'block' : 'none');
+    }));
 
-  <script src="/js/main.js"></script>
+    // Slideshow script
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slide");
+    function showSlides() {
+      slides.forEach(slide => slide.style.display = "none");
+      slideIndex++;
+      if (slideIndex > slides.length) slideIndex = 1;
+      slides[slideIndex - 1].style.display = "block";
+      setTimeout(showSlides, 2500);
+    }
+    showSlides();
+
+    function confirmDelete() {
+      if (confirm('Are you sure you want to delete this movie?')) {
+        alert('Deleted successfully!');
+      }
+    }
+    
+  </script>
 </body>
 </html>
