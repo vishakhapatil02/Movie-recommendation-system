@@ -1,0 +1,114 @@
+ <!-- views/admin/dashboard.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MovieMatch Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #1e1e2f;
+      color: #fff;
+    }
+    .wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 250px;
+      background: #2c2f48;
+      padding: 20px;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .sidebar h2 {
+      color: #4ef037;
+    }
+    .sidebar a {
+      display: block;
+      padding: 12px;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .sidebar a:hover {
+      background: #4ef037;
+      color: #000;
+    }
+    .main-content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+    .navbar {
+      background: #191d3a;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #333;
+    }
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #4ef037;
+    }
+    .navbar .profile {
+      display: flex;
+      align-items: center;
+    }
+    .navbar .profile i {
+      font-size: 1.2rem;
+      margin-left: 15px;
+      color: #fff;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">MovieMatch</div>
+    <div class="profile">
+      <i class="bi bi-bell"></i>
+      <i class="bi bi-person-circle"></i>
+    </div>
+  </div>
+
+  <div class="wrapper">
+    <div class="sidebar">
+      <h2>Menu</h2>
+      <a href="#" onclick="loadContent('movies')">🎥 Movies</a>
+      <a href="#" onclick="loadContent('watchlist')">🗓 Watchlist</a>
+      <a href="#" onclick="loadContent('ratings')">⭐ Ratings & Reviews</a>
+      <a href="#" onclick="loadContent('profile')">👤 User Profile</a>
+      <a href="/logout">🚪 Logout</a>
+    </div>
+    <div class="main-content" id="mainContent">
+      <h2>Welcome to MovieMatch</h2>
+      <p>Select an option from the sidebar.</p>
+    </div>
+  </div>
+
+  <script>
+    function loadContent(view) {
+      fetch(`/partials/${view}.ejs`)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('mainContent').innerHTML = html;
+        })
+        .catch(err => {
+          document.getElementById('mainContent').innerHTML = `<p>Error loading ${view}</p>`;
+        });
+    }
+  </script>
+</body>
+</html>

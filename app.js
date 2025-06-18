@@ -3,8 +3,9 @@ const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
-const authroutes = require('./routes/auth.routes');
-const movieRoutes = require('./routes/movie.routes'); 
+const authRoutes = require('./routes/auth.routes');
+const movieRoutes = require('./routes/movie.routes');
+const partialRoutes = require('./routes/partials.routes'); 
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -21,8 +23,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Routes
-app.use('/', authroutes);
-app.use('/movies', movieRoutes); 
+app.use('/',authRoutes);
 
+// Routes
+// app.use('/', authRoutes);
+app.get('/admin/dashboard', (req, res) => {
+    res.render('admin/dashboard', { title: 'Admin Dashboard' });
+});   
+
+app.use('/movies', movieRoutes); 
+app.use('/',authRoutes);
+
+app.get('/partials/:name', (req, res) => {
+  const viewName = req.params.name;
+  res.render(`snippets/${viewName}`);
+});
 module.exports = app;

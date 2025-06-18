@@ -1,110 +1,59 @@
-
-/*nst db = require('../config/db.config'); // ✅ Only once
+ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const db = require('../config/db.config');
 
+const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key';
 
-// Dashboard
-exports.getdashboard = (req, res) => {
-  res.render('index');
-};
+// =================== GET Routes ===================
 
-// Login page
+// GET: Login Page
 exports.getlogin = (req, res) => {
-  res.render('login');
+  res.render('login', { error: null });
 };
 
-// Register page
+// GET: Register Page
 exports.getregister = (req, res) => {
   res.render('register');
 };
 
-//home page
+// GET: Home Page
 exports.gethome = (req, res) => {
   res.render('home');
 };
-// posthome logic (example)
-exports.posthome = (req, res) => {
-  res.send("Posted to home!");
-};
 
-// Register logic
-
-
-s.postregister = (req, res) => {
-  const { username, email, password } = req.body;
-  console.log("from data received:", username, email, password);
-  const sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-  db.query(sql, [username, email, password], (err) => {
-    if (err) {
-      console.error("DB error:", err);
-      return res.send("Registration failed");
-    }
-                                                                                   
-    res.redirect('/login');
-  });
-}; *
-
-// Login logic
-/* orts.postlogin = (req, res) => {
-  const { username, password } = req.body;
-  console.log("username:", username);
- console.log("Password:", password);
-
-  const sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-
-  db.query(sql, [username, password], (err, results) => {
-    if (err) return res.send("Error occurred");
-   if (results.length > 0) {
-   res.redirect('/home'); 
-} else {
-   res.send("Invalid username or password");
-}
-
-  });
-}; */
-
-// controllers/auth.controller.js
-
-const db = require('../config/db.config');
-const bcrypt = require('bcrypt');
-
-// GET: Dashboard
-exports.getdashboard = (req, res) => {
+// GET: Index Page
+exports.IndexPage = (req, res) => {
   res.render('index');
 };
 
-// GET: Login page
-exports.getlogin = (req, res) => {
-  res.render('login');
+// GET: Admin Dashboard Page (Protected)
+exports.getdashboard = (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.redirect('/login');
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    res.render('admin/dashboard', { username: decoded.username });
+  } catch (err) {
+    res.clearCookie('token');
+    res.redirect('/login');
+  }
 };
 
-// GET: Register page
-exports.getregister = (req, res) => {
-  res.render('register');
-};
-
+// Logout
 exports.logout = (req, res) => {
   res.clearCookie('token');
   res.redirect('/login');
 };
 
-// GET: Home page
-exports.gethome = (req, res) => {
-  res.render('home');
-};
+// =================== POST Routes ===================
 
-// POST: Home example
-exports.posthome = (req, res) => {
-  res.send("Posted to home!");
-};
-
-// POST: Register with validation
+// POST: Register user
 exports.postregister = async (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const email = req.body.email?.trim();
   const password = req.body.password?.trim();
 
-  // Basic validation
   if (!username || !email || !password) {
     return res.send("All fields are required.");
   }
@@ -118,7 +67,6 @@ exports.postregister = async (req, res) => {
     return res.send("Password must be at least 6 characters.");
   }
 
-  // Check if user already exists
   const checkSql = "SELECT * FROM users WHERE username = ? OR email = ?";
   db.query(checkSql, [username, email], async (err, results) => {
     if (err) {
@@ -132,8 +80,8 @@ exports.postregister = async (req, res) => {
 
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const insertSql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-      db.query(insertSql, [username, email, hashedPassword], (err) => {
+      const insertSql = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
+      db.query(insertSql, [username, email, hashedPassword, 'USER'], (err) => {
         if (err) {
           console.error("DB insert error:", err);
           return res.send("Registration failed.");
@@ -147,8 +95,7 @@ exports.postregister = async (req, res) => {
   });
 };
 
-// POST: Login with validation
-
+// POST: Login user
 exports.postlogin = (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const password = req.body.password?.trim();
@@ -157,21 +104,48 @@ exports.postlogin = (req, res) => {
     return res.render('login', { error: "Username and password are required." });
   }
 
+  // Admin hardcoded login
+  if (username === 'admin' && password === 'admin123') {
+    const token = jwt.sign({ username: 'admin', role: 'ADMIN' }, SECRET_KEY, { expiresIn: '1h' });
+    res.cookie('token', token, { httpOnly: true });
+    return res.redirect('/admin/dashboard');
+  }
+
   const sql = "SELECT * FROM users WHERE username = ?";
   db.query(sql, [username], async (err, results) => {
-    if (err) return res.send("DB error");
-    if (results.length === 0) return res.render('login', { error: "Invalid credentials." });
+    if (err) {
+      console.error("DB error:", err);
+      return res.render('login', { error: "Database error." });
+    }
+
+    if (results.length === 0) {
+      return res.render('login', { error: "Invalid username or password." });
+    }
 
     const user = results[0];
     const match = await bcrypt.compare(password, user.password);
 
-    if (!match) return res.render('login', { error: "Invalid credentials." });
+    if (!match) {
+      return res.render('login', { error: "Invalid username or password." });
+    }
 
-    //  Generate token
-    const token = jwt.sign({ id: user.id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign(
+      { id: user.user_id, username: user.username, role: user.role },
+      SECRET_KEY,
+      { expiresIn: '1h' }
+    );
 
-    // Send token via cookie or localStorage (for now use cookie)
     res.cookie('token', token, { httpOnly: true });
-    res.redirect('/home');
+
+    // Redirect based on role
+    if (user.role === 'ADMIN') {
+      return res.redirect('/admin/dashboard');
+    } else {
+      return res.render('movies/add', {
+        title: 'Add Movie',
+        username: user.username,
+        role: user.role
+      });
+    }
   });
 };
