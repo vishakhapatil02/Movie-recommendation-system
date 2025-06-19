@@ -3,205 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Movies</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --sidebar-width: 250px;
+            --navbar-height: 60px;
+            --primary-color: #4e73df;
+            --secondary-color: #858796;
+        }
+        
         body {
-            display: flex;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            margin: 0;
-            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8f9fc;
+            overflow-x: hidden;
         }
-        .sidebar {
-            min-width: 250px;
-            background-color: #343a40;
+        
+        #sidebar {
+            width: var(--sidebar-width);
             height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: linear-gradient(180deg, var(--primary-color) 10%, #224abe 100%);
             color: white;
-            padding: 20px 0;
+            transition: all 0.3s;
+            z-index: 1000;
+            padding-top: var(--navbar-height);
         }
-        .sidebar-header {
-            padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        
+        #sidebar.collapsed {
+            margin-left: calc(-1 * var(--sidebar-width));
         }
-        .sidebar .nav-link {
-            color: rgba(255,255,255,0.8);
-            padding: 12px 20px;
-            margin: 2px 0;
-            border-radius: 0;
+        
+        #main-content {
+            margin-left: var(--sidebar-width);
+            padding-top: var(--navbar-height);
             transition: all 0.3s;
         }
-        .sidebar .nav-link:hover {
-            color: white;
-            background-color: rgba(255,255,255,0.1);
+        
+        #main-content.expanded {
+            margin-left: 0;
         }
-        .sidebar .nav-link.active {
-            color: white;
-            background-color: rgba(255,255,255,0.2);
-        }
-        .sidebar .nav-link i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-        .main-body {
-            flex-grow: 1;
-            padding: 20px;
+        
+        #navbar {
+            height: var(--navbar-height);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
             background-color: white;
-            overflow-y: auto;
-            height: 100vh;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
         }
+        
+        .sidebar-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            display: block;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-link i {
+            margin-right: 0.5rem;
+        }
+        
+        .submenu {
+            padding-left: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
         .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
             border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
         }
-        .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            font-weight: 600;
-            padding: 15px 20px;
+        
+        .tab-content {
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 0 0 0.35rem 0.35rem;
         }
-        .nav-tabs {
-            border-bottom: 1px solid #dee2e6;
-        }
+        
         .nav-tabs .nav-link {
             border: none;
-            color: #495057;
-            font-weight: 500;
-            padding: 12px 20px;
+            color: var(--secondary-color);
         }
+        
         .nav-tabs .nav-link.active {
-            color: #007bff;
-            background-color: transparent;
-            border-bottom: 2px solid #007bff;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
         }
-        .form-control {
-            border-radius: 5px;
-            padding: 10px 15px;
-        }
-        .btn {
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-weight: 500;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-        .btn-sm {
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-        .table th {
-            border-top: none;
-            font-weight: 600;
-            color: #495057;
-        }
-        .movie-poster {
-            width: 100px;
-            height: auto;
-            border-radius: 5px;
-        }
-        .action-buttons .btn {
-            margin-right: 5px;
-        }
-        .preview-image {
+        
+        .movie-poster-preview {
             max-width: 200px;
-            max-height: 200px;
+            max-height: 300px;
             margin-top: 10px;
             display: none;
         }
-        .loading {
+        
+        .loading-spinner {
             display: none;
             text-align: center;
             padding: 20px;
         }
-        .loading i {
-            animation: spin 1s linear infinite;
+        
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1100;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        
+        @media (max-width: 768px) {
+            #sidebar {
+                margin-left: calc(-1 * var(--sidebar-width));
+            }
+            
+            #sidebar.collapsed {
+                margin-left: 0;
+            }
+            
+            #main-content {
+                margin-left: 0;
+            }
+            
+            #main-content.expanded {
+                margin-left: var(--sidebar-width);
+            }
         }
     </style>
 </head>
 <body>
-
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h4 class="text-white"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h4>
-        </div>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active" href="#" onclick="showTab('movies')"><i class="fas fa-film"></i> Movies</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="showTab('users')"><i class="fas fa-users"></i> Users</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="showTab('ratings')"><i class="fas fa-star"></i> Ratings & Reviews</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="showTab('profile')"><i class="fas fa-user-cog"></i> Admin Profile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="main-body">
-        <!-- Movies Tab Content -->
-        <div id="movies" class="tab-content">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3><i class="fas fa-film"></i> Movie Management</h3>
-                <button class="btn btn-primary" onclick="showMovieTab('add')">
-                    <i class="fas fa-plus"></i> Add New Movie
-                </button>
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container-fluid">
+            <button class="btn btn-link text-dark" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand ms-2" href="#">
+                <i class="fas fa-film me-2"></i>Movie Admin
+            </a>
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fa-lg"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
             </div>
-            
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#" onclick="showMovieTab('add')">Add Movie</a>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <div class="sidebar-header py-3 px-4">
+            <h5 class="mb-0">Admin Dashboard</h5>
+        </div>
+        <hr class="sidebar-divider my-0">
+        <div class="sidebar-menu">
+            <ul class="list-unstyled">
+                <li>
+                    <a href="#movies" class="sidebar-link active" data-bs-toggle="collapse" aria-expanded="true">
+                        <i class="fas fa-film"></i> Movies
+                    </a>
+                    <ul class="submenu collapse show" id="movies">
+                        <li><a href="#addMovie" class="sidebar-link" data-tab="add-movie"><i class="fas fa-plus-circle"></i> Add Movie</a></li>
+                        <li><a href="#viewMovies" class="sidebar-link" data-tab="view-movies"><i class="fas fa-list"></i> View Movies</a></li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="showMovieTab('view')">View Movies</a>
+                <li>
+                    <a href="#users" class="sidebar-link" data-bs-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                    <ul class="submenu collapse" id="users">
+                        <li><a href="#viewUsers" class="sidebar-link" data-tab="view-users"><i class="fas fa-list"></i> View Users</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#reviews" class="sidebar-link" data-bs-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-star"></i> Ratings & Reviews
+                    </a>
+                    <ul class="submenu collapse" id="reviews">
+                        <li><a href="#movieRatings" class="sidebar-link" data-tab="movie-ratings"><i class="fas fa-star-half-alt"></i> Movie Ratings</a></li>
+                        <li><a href="#movieReviews" class="sidebar-link" data-tab="movie-reviews"><i class="fas fa-comment"></i> Movie Reviews</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#adminProfile" class="sidebar-link" data-tab="admin-profile">
+                        <i class="fas fa-user-shield"></i> Admin Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="#logout" class="sidebar-link">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 </li>
             </ul>
-            
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="p-4">
+        <!-- Toast Notifications -->
+        <div class="toast-container">
+            <div class="toast align-items-center text-white bg-success" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Operation completed successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="toast align-items-center text-white bg-danger" role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        An error occurred. Please try again.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading data...</p>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="mainTabContent">
             <!-- Add Movie Tab -->
-            <div id="add-movie" class="tab-pane mt-3">
-                <div class="card">
-                    <div class="card-header">
-                        Add New Movie
+            <div class="tab-pane fade show active" id="add-movie" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Add New Movie</h6>
                     </div>
                     <div class="card-body">
-                        <form id="addMovieForm">
+                        <form id="addMovieForm" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="title">Title *</label>
-                                        <input type="text" class="form-control" id="title" required>
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="title" name="title" required>
+                                        <div class="invalid-feedback">Please provide a movie title.</div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="description">Description *</label>
-                                        <textarea class="form-control" id="description" rows="3" required></textarea>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                        <div class="invalid-feedback">Please provide a movie description.</div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="release_date">Release Date *</label>
-                                        <input type="date" class="form-control" id="release_date" required>
+                                    <div class="mb-3">
+                                        <label for="releaseDate" class="form-label">Release Date <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="releaseDate" name="releaseDate" required>
+                                        <div class="invalid-feedback">Please select a release date.</div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="genre">Genre *</label>
-                                        <select class="form-control" id="genre" required>
-                                            <option value="">Select Genre</option>
+                                    <div class="mb-3">
+                                        <label for="genre" class="form-label">Genre <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="genre" name="genre" required>
+                                            <option value="" selected disabled>Select a genre</option>
                                             <option value="Action">Action</option>
                                             <option value="Adventure">Adventure</option>
                                             <option value="Comedy">Comedy</option>
@@ -210,84 +286,82 @@
                                             <option value="Sci-Fi">Sci-Fi</option>
                                             <option value="Thriller">Thriller</option>
                                         </select>
+                                        <div class="invalid-feedback">Please select a genre.</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="director">Director *</label>
-                                        <input type="text" class="form-control" id="director" required>
+                                    <div class="mb-3">
+                                        <label for="director" class="form-label">Director</label>
+                                        <input type="text" class="form-control" id="director" name="director">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="language">Language *</label>
-                                        <input type="text" class="form-control" id="language" required>
+                                    <div class="mb-3">
+                                        <label for="language" class="form-label">Language</label>
+                                        <input type="text" class="form-control" id="language" name="language">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="country">Country *</label>
-                                        <input type="text" class="form-control" id="country" required>
+                                    <div class="mb-3">
+                                        <label for="country" class="form-label">Country</label>
+                                        <input type="text" class="form-control" id="country" name="country">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="budget">Budget ($) *</label>
-                                        <input type="number" class="form-control" id="budget" required>
+                                    <div class="mb-3">
+                                        <label for="budget" class="form-label">Budget ($)</label>
+                                        <input type="number" class="form-control" id="budget" name="budget" min="0">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="revenue">Revenue ($) *</label>
-                                        <input type="number" class="form-control" id="revenue" required>
+                                    <div class="mb-3">
+                                        <label for="revenue" class="form-label">Revenue ($)</label>
+                                        <input type="number" class="form-control" id="revenue" name="revenue" min="0">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="runtime">Runtime (minutes) *</label>
-                                        <input type="number" class="form-control" id="runtime" required>
+                                    <div class="mb-3">
+                                        <label for="runtime" class="form-label">Runtime (minutes)</label>
+                                        <input type="number" class="form-control" id="runtime" name="runtime" min="0">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="poster">Movie Poster *</label>
-                                        <input type="file" class="form-control-file" id="poster" accept="image/*" required>
-                                        <img id="poster-preview" class="preview-image" src="#" alt="Poster preview">
+                                    <div class="mb-3">
+                                        <label for="poster" class="form-label">Movie Poster <span class="text-danger">*</span></label>
+                                        <input type="file" class="form-control" id="poster" name="poster" accept="image/*" required>
+                                        <div class="invalid-feedback">Please upload a movie poster.</div>
+                                        <img id="posterPreview" class="movie-poster-preview img-thumbnail" alt="Poster preview">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="trailer_url">Trailer URL *</label>
-                                        <input type="url" class="form-control" id="trailer_url" placeholder="https://www.youtube.com/watch?v=..." required>
+                                    <div class="mb-3">
+                                        <label for="trailerUrl" class="form-label">Trailer URL</label>
+                                        <input type="url" class="form-control" id="trailerUrl" name="trailerUrl" placeholder="https://www.youtube.com/watch?v=...">
+                                        <div class="invalid-feedback">Please provide a valid URL.</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Save Movie
-                                </button>
-                                <button type="reset" class="btn btn-secondary">
-                                    <i class="fas fa-undo"></i> Reset
-                                </button>
+                            <div class="d-flex justify-content-end">
+                                <button type="reset" class="btn btn-secondary me-2">Reset</button>
+                                <button type="submit" class="btn btn-primary">Save Movie</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            
+
             <!-- View Movies Tab -->
-            <div id="view-movies" class="tab-pane mt-3" style="display: none;">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span>All Movies</span>
-                        <div class="input-group" style="width: 300px;">
-                            <input type="text" class="form-control" placeholder="Search movies...">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
+            <div class="tab-pane fade" id="view-movies" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Movie List</h6>
+                        <div class="dropdown no-arrow">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="#">Export to CSV</a></li>
+                                <li><a class="dropdown-item" href="#">Export to Excel</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Print</a></li>
+                            </ul>
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="loading" id="movies-loading">
-                            <i class="fas fa-spinner fa-3x fa-spin"></i>
-                            <p>Loading movies...</p>
-                        </div>
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-bordered table-hover" id="moviesTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>Poster</th>
@@ -295,256 +369,416 @@
                                         <th>Genre</th>
                                         <th>Release Date</th>
                                         <th>Director</th>
+                                        <th>Runtime</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="movieTableBody">
-                                    <!-- Sample data - in a real app this would come from an API -->
+                                <tbody>
+                                    <!-- Sample data - will be populated via JavaScript -->
                                     <tr>
-                                        <td><img src="https://via.placeholder.com/100x150" class="movie-poster" alt="Movie Poster"></td>
+                                        <td><img src="https://via.placeholder.com/50x75" alt="Movie poster" class="img-thumbnail" style="width: 50px; height: 75px;"></td>
                                         <td>The Shawshank Redemption</td>
                                         <td>Drama</td>
                                         <td>1994-09-23</td>
                                         <td>Frank Darabont</td>
-                                        <td class="action-buttons">
-                                            <button class="btn btn-sm btn-primary" onclick="editMovie(1)">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </button>
-                                            <button class="btn btn-sm btn-danger" onclick="confirmDelete(1)">
-                                                <i class="fas fa-trash"></i> Delete
-                                            </button>
+                                        <td>142</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><img src="https://via.placeholder.com/100x150" class="movie-poster" alt="Movie Poster"></td>
+                                        <td><img src="https://via.placeholder.com/50x75" alt="Movie poster" class="img-thumbnail" style="width: 50px; height: 75px;"></td>
                                         <td>The Godfather</td>
                                         <td>Crime</td>
                                         <td>1972-03-24</td>
                                         <td>Francis Ford Coppola</td>
-                                        <td class="action-buttons">
-                                            <button class="btn btn-sm btn-primary" onclick="editMovie(2)">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </button>
-                                            <button class="btn btn-sm btn-danger" onclick="confirmDelete(2)">
-                                                <i class="fas fa-trash"></i> Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="https://via.placeholder.com/100x150" class="movie-poster" alt="Movie Poster"></td>
-                                        <td>The Dark Knight</td>
-                                        <td>Action</td>
-                                        <td>2008-07-18</td>
-                                        <td>Christopher Nolan</td>
-                                        <td class="action-buttons">
-                                            <button class="btn btn-sm btn-primary" onclick="editMovie(3)">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </button>
-                                            <button class="btn btn-sm btn-danger" onclick="confirmDelete(3)">
-                                                <i class="fas fa-trash"></i> Delete
-                                            </button>
+                                        <td>175</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary me-1"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <nav aria-label="Movie pagination">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Users Tab -->
+            <div class="tab-pane fade" id="view-users" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">User List</h6>
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control" placeholder="Search users...">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" id="usersTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Avatar</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Joined</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Sample data - will be populated via JavaScript -->
+                                    <tr>
+                                        <td><img src="https://via.placeholder.com/40" alt="User avatar" class="rounded-circle" style="width: 40px; height: 40px;"></td>
+                                        <td>John Doe</td>
+                                        <td>john@example.com</td>
+                                        <td>2023-01-15</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-warning me-1"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-ban"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><img src="https://via.placeholder.com/40" alt="User avatar" class="rounded-circle" style="width: 40px; height: 40px;"></td>
+                                        <td>Jane Smith</td>
+                                        <td>jane@example.com</td>
+                                        <td>2023-02-20</td>
+                                        <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-warning me-1"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-ban"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Movie Ratings Tab -->
+            <div class="tab-pane fade" id="movie-ratings" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Movie Ratings</h6>
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control" placeholder="Search ratings...">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" id="ratingsTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Movie</th>
+                                        <th>User</th>
+                                        <th>Rating</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Sample data - will be populated via JavaScript -->
+                                    <tr>
+                                        <td>The Shawshank Redemption</td>
+                                        <td>John Doe</td>
+                                        <td>
+                                            <div class="rating-stars">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                            </div>
+                                        </td>
+                                        <td>2023-05-10</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>The Godfather</td>
+                                        <td>Jane Smith</td>
+                                        <td>
+                                            <div class="rating-stars">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="far fa-star text-warning"></i>
+                                            </div>
+                                        </td>
+                                        <td>2023-05-15</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Movie Reviews Tab -->
+            <div class="tab-pane fade" id="movie-reviews" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Movie Reviews</h6>
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control" placeholder="Search reviews...">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" id="reviewsTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Movie</th>
+                                        <th>User</th>
+                                        <th>Review</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Sample data - will be populated via JavaScript -->
+                                    <tr>
+                                        <td>The Shawshank Redemption</td>
+                                        <td>John Doe</td>
+                                        <td>One of the best movies ever made. The story is compelling and the acting is superb.</td>
+                                        <td>2023-05-10</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>The Godfather</td>
+                                        <td>Jane Smith</td>
+                                        <td>A classic masterpiece that defined the gangster genre. Marlon Brando's performance is legendary.</td>
+                                        <td>2023-05-15</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Profile Tab -->
+            <div class="tab-pane fade" id="admin-profile" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card mb-4">
+                            <div class="card-body text-center">
+                                <img src="https://via.placeholder.com/150" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                <h5 class="my-3">Admin User</h5>
+                                <p class="text-muted mb-1">System Administrator</p>
+                                <p class="text-muted mb-4">Movie Admin Dashboard</p>
+                                <div class="d-flex justify-content-center mb-2">
+                                    <button type="button" class="btn btn-primary me-1">Edit Profile</button>
+                                    <button type="button" class="btn btn-outline-primary">Change Password</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Full Name</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">Admin User</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Email</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">admin@movieadmin.com</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Phone</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">(123) 456-7890</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Address</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">123 Admin Street, Admin City, 12345</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Last Login</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">2023-06-15 14:30:22</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Other tabs (hidden by default) -->
-        <div id="users" class="tab-content" style="display: none;">
-            <h3>Users</h3>
-            <!-- User management content would go here -->
-        </div>
-
-        <div id="ratings" class="tab-content" style="display: none;">
-            <h3>Rating and Reviews</h3>
-            <!-- Ratings and reviews content would go here -->
-        </div>
-
-        <div id="profile" class="tab-content" style="display: none;">
-            <h3>Admin Profile</h3>
-            <!-- Admin profile content would go here -->
-        </div>
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this movie? This action cannot be undone.
+                    Are you sure you want to delete this item? This action cannot be undone.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Success Toast -->
-    <div class="toast" id="successToast" style="position: fixed; top: 20px; right: 20px; min-width: 300px;" data-delay="3000">
-        <div class="toast-header bg-success text-white">
-            <strong class="mr-auto">Success</strong>
-            <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body">
-            Operation completed successfully!
-        </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <script>
-        // Global variable to store the movie ID to delete
-        let movieToDelete = null;
-        
-        // Show tab content
-        function showTab(tab) {
-            $('.tab-content').hide();
-            $('#' + tab).show();
-            // Update active state in sidebar
-            $('.sidebar .nav-link').removeClass('active');
-            $(`.sidebar .nav-link[onclick="showTab('${tab}')"]`).addClass('active');
-        }
-        
-        // Show movie tab content
-        function showMovieTab(tab) {
-            $('#add-movie, #view-movies').hide();
-            $('#' + tab + '-movie').show();
-            // Update active state in movie tabs
-            $('.nav-tabs .nav-link').removeClass('active');
-            $(`.nav-tabs .nav-link[onclick="showMovieTab('${tab}')"]`).addClass('active');
-            
-            // If showing view movies, simulate loading data
-            if (tab === 'view') {
-                $('#movies-loading').show();
-                $('#movieTableBody').hide();
-                
-                // Simulate API call delay
-                setTimeout(function() {
-                    $('#movies-loading').hide();
-                    $('#movieTableBody').show();
-                }, 1000);
-            }
-        }
-        
-        // Preview image when selected
-        $('#poster').change(function() {
-            if (this.files && this.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#poster-preview').attr('src', e.target.result).show();
-                }
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-        
-        // Handle form submission
-        $('#addMovieForm').on('submit', function(e) {
-            e.preventDefault();
-            
-            // Show loading state
-            $('button[type="submit"]').html('<i class="fas fa-spinner fa-spin"></i> Saving...').prop('disabled', true);
-            
-            // Simulate API call delay
-            setTimeout(function() {
-                // Show success toast
-                $('#successToast .toast-body').text('Movie added successfully!');
-                $('#successToast').toast('show');
-                
-                // Reset form
-                $('#addMovieForm')[0].reset();
-                $('#poster-preview').hide();
-                
-                // Reset button
-                $('button[type="submit"]').html('<i class="fas fa-save"></i> Save Movie').prop('disabled', false);
-                
-                // Optionally switch to view tab
-                // showMovieTab('view');
-            }, 1500);
-        });
-        
-        // Confirm delete action
-        function confirmDelete(movieId) {
-            movieToDelete = movieId;
-            $('#deleteModal').modal('show');
-        }
-        
-        // Handle delete confirmation
-        $('#confirmDeleteBtn').click(function() {
-            $('#deleteModal').modal('hide');
-            
-            // Show loading state
-            $('#movies-loading').show();
-            $('#movieTableBody').hide();
-            
-            // Simulate API call delay
-            setTimeout(function() {
-                // Show success toast
-                $('#successToast .toast-body').text('Movie deleted successfully!');
-                $('#successToast').toast('show');
-                
-                // In a real app, you would remove the item from the table
-                // For now, we'll just reload the table
-                $('#movies-loading').hide();
-                $('#movieTableBody').show();
-            }, 1000);
-        });
-        
-        // Edit movie function
-        function editMovie(movieId) {
-            // In a real app, this would fetch movie data and populate the form
-            alert('Edit movie with ID: ' + movieId);
-            // You would typically:
-            // 1. Fetch movie data by ID
-            // 2. Populate the add movie form
-            // 3. Change the form to update mode
-            // 4. Switch to the add movie tab
-        }
-        
-        // Logout function
-        function logout() {
-            // Implement logout functionality
-            if (confirm('Are you sure you want to logout?')) {
-                // In a real app, this would redirect to logout endpoint
-                alert('Logged out successfully');
-            }
-        }
-        
-        // Initialize the page
         $(document).ready(function() {
-            // Show movies tab by default
-            showTab('movies');
-            showMovieTab('add');
-            
-            // Initialize toasts
-            $('.toast').toast();
+            // Sidebar toggle functionality
+            $('#sidebarToggle').click(function() {
+                $('#sidebar').toggleClass('collapsed');
+                $('#main-content').toggleClass('expanded');
+            });
+
+            // Tab navigation
+            $('[data-tab]').click(function(e) {
+                e.preventDefault();
+                const tabId = $(this).data('tab');
+                $('.tab-pane').removeClass('show active');
+                $('#' + tabId).addClass('show active');
+                
+                // Update active state in sidebar
+                $('.sidebar-link').removeClass('active');
+                $(this).addClass('active');
+                
+                // Show loading spinner
+                showLoading();
+                
+                // Simulate loading data
+                setTimeout(function() {
+                    hideLoading();
+                }, 1000);
+            });
+
+            // Show poster preview
+            $('#poster').change(function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#posterPreview').attr('src', e.target.result).show();
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Form validation
+            $('#addMovieForm').submit(function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                let isValid = true;
+                $(this).find('[required]').each(function() {
+                    if (!$(this).val()) {
+                        $(this).addClass('is-invalid');
+                        isValid = false;
+                    } else {
+                        $(this).removeClass('is-invalid');
+                    }
+                });
+                
+                if (isValid) {
+                    showLoading();
+                    
+                    // Simulate API call
+                    setTimeout(function() {
+                        hideLoading();
+                        showSuccessToast('Movie added successfully!');
+                        $('#addMovieForm')[0].reset();
+                        $('#posterPreview').hide();
+                    }, 1500);
+                }
+            });
+
+            // Delete button click handler
+            $('.btn-danger').click(function() {
+                const itemId = $(this).closest('tr').find('td:first').text();
+                $('#deleteModal').modal('show');
+                
+                $('#confirmDelete').off('click').click(function() {
+                    showLoading();
+                    
+                    // Simulate API call
+                    setTimeout(function() {
+                        hideLoading();
+                        $('#deleteModal').modal('hide');
+                        showSuccessToast('Item deleted successfully!');
+                    }, 1000);
+                });
+            });
+
+            // Helper functions
+            function showLoading() {
+                $('#loadingSpinner').show();
+            }
+
+            function hideLoading() {
+                $('#loadingSpinner').hide();
+            }
+
+            function showSuccessToast(message) {
+                $('#successToast .toast-body').text(message);
+                const toast = new bootstrap.Toast($('#successToast'));
+                toast.show();
+            }
+
+            function showErrorToast(message) {
+                $('#errorToast .toast-body').text(message);
+                const toast = new bootstrap.Toast($('#errorToast'));
+                toast.show();
+            }
         });
     </script>
 </body>
