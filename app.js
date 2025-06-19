@@ -27,15 +27,18 @@ app.use('/',authRoutes);
 
 // Routes
 // app.use('/', authRoutes);
-app.get('/admin/dashboard', (req, res) => {
-    res.render('admin/dashboard', { title: 'Admin Dashboard' });
-});   
+ 
+
+app.get('/',(req, res) => {
+  res.render('/login');
+});
 
 app.use('/movies', movieRoutes); 
 app.use('/',authRoutes);
 
 app.get('/partials/:name', (req, res) => {
   const viewName = req.params.name;
-  res.render(`snippets/${viewName}`);
+ res.render(`snippets/${viewName}`); // ✅
+
 });
 module.exports = app;

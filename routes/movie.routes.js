@@ -17,6 +17,7 @@ router.get('/add', (req, res) => {
   res.render('movies/add');
 });
 
+
 // Route to handle form submission (for test/demo)
 router.post('/add', upload.single('poster'), (req, res) => {
   console.log(req.file);  // ✅ Uploaded file info
