@@ -32,6 +32,18 @@ exports.createMovie = (req, res) => {
     res.redirect('/admin/movies');
   });
 };
+exports.listMovies = (req, res) => {
+  Movie.findAll((err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    res.render('admin_dashboard/dashboard', {
+      activeTab: 'view-movies',
+      movies: results
+    });
+  });
+};
+
+
 
 // Show a single movie by ID
 exports.showMovie = (req, res) => {

@@ -7,6 +7,7 @@ const upload = require('../middleware/multer'); // ✅ Use the existing multer c
 router.get('/movies', movieController.listMovies);
 router.get('/admin/movies/create', movieController.showCreateForm);
 router.post('/admin/movies', upload.single('poster'), movieController.createMovie);
+router.get('/admin/movies', movieController.listMovies); // should exist
 router.get('/admin/movies/:id', movieController.showMovie);
 router.get('/admin/movies/:id/edit', movieController.showEditForm);
 router.post('/admin/movies/:id', upload.single('poster'), movieController.updateMovie);

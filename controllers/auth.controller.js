@@ -149,3 +149,25 @@ exports.postlogin = (req, res) => {
     }
   });
 };
+exports.createMovie = (req, res) => {
+  const data = req.body;
+
+  const poster = req.file ? `/uploads/${req.file.filename}` : null;
+
+  const movieData = {
+    ...data,
+    poster_url: poster
+  };
+
+  console.log("Movie Data Received from Form:", movieData); // 🐞 Debug log
+
+  Movie.create(movieData, (err, result) => {
+    if (err) {
+      console.error("Movie Insert Error:", err); // Log DB error
+      return res.status(500).send("Error inserting movie into database.");
+    }
+
+    // ✅ Redirect to view-movies anchor after successful insert
+    res.redirect('/admin/movies#view-movies');
+  });
+};
