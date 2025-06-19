@@ -148,4 +148,4 @@ exports.postlogin = (req, res) => {
       });
     }
   });
-};
+}
