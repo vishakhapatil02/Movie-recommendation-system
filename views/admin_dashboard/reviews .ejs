@@ -1,13 +1,134 @@
-                                    </div>
-                                </div>
-                            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ratings & Reviews | Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Include Navbar Component -->
+    <div id="navbar-container"></div>
+
+    <!-- Include Sidebar Component -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="p-4">
+        <!-- Toast Notifications -->
+        <div class="toast-container">
+            <!-- Same toast structure as movies.html -->
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <!-- Same spinner as movies.html -->
+        </div>
+
+        <!-- Tab Navigation -->
+        <ul class="nav nav-tabs" id="reviewsTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="ratings-tab" data-bs-toggle="tab" data-bs-target="#ratings" type="button" role="tab">Ratings</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">Reviews</button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="reviewsTabContent">
+            <!-- Ratings Tab -->
+            <div class="tab-pane fade show active" id="ratings" role="tabpanel">
+                <div class="card mb-4 mt-3">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Movie Ratings</h6>
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control ratings-search" placeholder="Search ratings...">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
                         </div>
-                        <div id="reviewsTab" class="tab-pane fade">
-                            <div class="card">
-                                <div class="card-body">
-                                    <p>Reviews content here...</p>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="ratingsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Movie</th>
+                                        <th>User</th>
+                                        <th>Rating</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Will be populated via JavaScript -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div class="tab-pane fade" id="reviews" role="tabpanel">
+                <div class="card mb-4 mt-3">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Movie Reviews</h6>
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control reviews-search" placeholder="Search reviews...">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="reviewsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Movie</th>
+                                        <th>User</th>
+                                        <th>Review</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Will be populated via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <!-- Same as in movies.html -->
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../js/main.js"></script>
+    <script src="../js/ratings-reviews.js"></script>
+    
+    <script>
+        // Load navbar and sidebar components
+        $(document).ready(function() {
+            $('#navbar-container').load('../components/navbar.html');
+            $('#sidebar-container').load('../components/sidebar.html', function() {
+                // Set active menu item after loading
+                $('[data-tab="reviews"]').addClass('active');
+            });
+            
+            // Load ratings and reviews data
+            loadRatingsReviewsData();
+        });
+    </script>
+</body>
+</html>
