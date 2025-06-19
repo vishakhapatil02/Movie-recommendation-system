@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -14,14 +14,14 @@
       font-family: 'Roboto', sans-serif;
       background: linear-gradient(135deg, #a1bbd5,#1e2746);
       color: #eee;
-      margin: 10;
+      margin: 0; /* Changed from 10 to 0 */
       height: 100vh;
       overflow: hidden;
     }
 
     .top-navbar {
       height: 70px;
-       background: linear-gradient(135deg, #e83f36f1,#1e2746);
+      background: linear-gradient(135deg, #e83f36f1,#1e2746);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -93,55 +93,58 @@
     }
 
     .main-content {
-      margin-top: 90px;
-      margin-left: 220px;
-      /*padding: 1rem;*/
-     /* padding-top: 0.5rem;*/
+      margin-top: 70px; /* Adjusted to align with the top-navbar */
+      margin-left: 0; /* Changed to 0 to extend to the left */
       height: calc(100vh - 70px);
       overflow-y: auto;
-      background: #f5f8fa;
+      background: #f5f8fa; /* White background */
       color: #333;
+      position: absolute; /* Changed to absolute positioning */
+      left: 0; /* Align with the left side */
+      right: 0; /* Ensure it takes full width */
     }
 
     .content-section {
       display: none;
     }
     .category-heading {
-  color: #121b33;
-  font-size: 1.8rem;
-  font-weight: 700;
-  border-left: 6px solid #04e32daf;
-  padding-left: 12px;
-  margin-bottom: 1.5rem;
-}
+      color: #121b33;
+      font-size: 1.8rem;
+      font-weight: 700;
+      border-left: 6px solid #04e32daf;
+      padding-left: 12px;
+      margin-bottom: 1.5rem;
+    }
 
-.card-img-top {
-  height: 250px;
-  object-fit: cover;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-}
+    .card-img-top {
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
 
-.card-img-top:hover {
-  transform: scale(1.05);
-}
+    .card-img-top:hover {
+      transform: scale(1.05);
+    }
 
-.category-block {
-  padding: 1rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
+    .category-block {
+      padding: 1rem;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
 
   </style>
 </head>
 <body>
+
    <div class="top-navbar">
-    <img src="/images/logofilmfussion.webp">
-    <div class="brand-title"><i>FILM<span style="color:rgb(20, 114, 25); font-weight:bold;">Fussion</i></span></div>
-    <div><a href="/login" class="btn btn-outline-light" style="margin-left: 1000px;">Login</a></div>
-     <div><a href="/register" class="btn btn-outline-light">Register</a></div>
+      <img src="/images/logofilmfussion.webp">
+      <div class="brand-title"><i>FILM<span style="color:rgb(20, 114, 25); font-weight:bold;">Fussion</i></span></div>
+      <div class="navbar-buttons ms-auto">
+        <a href="/login" class="btn btn-outline-light me-2">Login</a>
+        <a href="/register" class="btn btn-outline-light">Register</a>
+      </div>
    </div>
 
   <main class="main-content">
@@ -149,41 +152,41 @@
     <section id="home" class="content-section" style="display: block;">
       <div id="slideshow" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-          <div class="carousel-item active" height="500px" margin-top="30px" object-fit="cover">
-            <img src="/images/movieposter1.webp" class="d-block w-100" style="height: 582px;  ;">
+          <div class="carousel-item active">
+            <img src="/images/movieposter1.webp" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster27.jpg" class="d-block w-100" style="height: 582px; ">
+            <img src="/images/poster27.jpg" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster29.jpg" class="d-block w-100" style="height: 582px;  ">
+            <img src="/images/poster29.jpg" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster30.webp" class="d-block w-100" style="height: 582px;  ;">
+            <img src="/images/poster30.webp" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster25.jpg" class="d-block w-100" style="height: 582px;  ">
+            <img src="/images/poster25.jpg" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster24.webp" class="d-block w-100" style="height: 582px;  ">
+            <img src="/images/poster24.webp" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster23.avif" class="d-block w-100" style="height: 582px;  ">
+            <img src="/images/poster23.avif" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster26.webp" class="d-block w-100" style="height: 582px;  ">
+            <img src="/images/poster26.webp" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster41.webp" class="d-block w-100" style="height: 582px;  ">
+            <img src="/images/poster41.webp" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster42.jpg" class="d-block w-100" style="height: 582px;  ">
+            <img src="/images/poster42.jpg" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster44.webp" class="d-block w-100" style="height: 582px;  ">
+            <img src="/images/poster44.webp" class="d-block w-100" style="height: 582px;">
           </div>
           <div class="carousel-item">
-            <img src="/images/poster46.jpg" class="d-block w-100" style="height: 582px; ;">
+            <img src="/images/poster46.jpg" class="d-block w-100" style="height: 582px;">
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#slideshow" data-bs-slide="prev">
@@ -391,8 +394,6 @@
     </div>
   </div>
 
-  
-
   <!-- Horror Movies -->
   <div class="category-block mb-5, mt-5">
     <h3 class="category-heading">Cartoons</h3>
@@ -415,110 +416,4 @@
       <div class="col">
         <div class="card h-100">
           <img src="/images/cc4.png" class="card-img-top" alt="Horror 4" style="height: 400px;">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Horror Movies -->
-  <div class="category-block mb-5, mt-5">
-    <h3 class="category-heading">Horror Movies</h3>
-    <div class="row row-cols-2 row-cols-md-4 g-4">
-      <div class="col">
-        <div class="card h-100">
-          <img src="/images/maaposter.jpg" class="card-img-top" alt="Horror 1" style="height: 400px;">
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="/images/hh2.jpg" class="card-img-top" alt="Horror 2" style="height: 400px;">
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="/images/hh3.webp" class="card-img-top" alt="Horror 3" style="height: 400px;">
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="/images/hh4.jpg" class="card-img-top" alt="Horror 4" style="height: 400px;">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add More Sections (Action, Marathi, South, etc.) similarly -->
-</div>
-
-      </section>
-    </section>
-
-     
-
-    <!-- USERS -->
-    <section id="users" class="content-section">
-      <h4>Users</h4>
-      <table class="table table-striped">
-        <thead class="table-dark"><tr><th>ID</th><th>Name</th><th>Email</th></tr></thead>
-        <tbody><tr><td>1</td><td>Alice</td><td>alice@example.com</td></tr></tbody>
-      </table>
-    </section>
-
-    <!-- RATINGS -->
-    <section id="ratings" class="content-section">
-      <h4>Ratings & Reviews</h4>
-      <input type="text" class="form-control mb-3" placeholder="Search by username...">
-      <ul class="nav nav-tabs">
-        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ratingTab">Ratings</a></li>
-        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#reviewTab">Reviews</a></li>
-      </ul>
-      <div class="tab-content mt-3">
-        <div class="tab-pane fade show active" id="ratingTab">
-          <table class="table"><thead><tr><th>User</th><th>Movie</th><th>Rating</th></tr></thead><tbody><tr><td>Alice</td><td>Movie A</td><td>4</td></tr></tbody></table>
-        </div>
-        <div class="tab-pane fade" id="reviewTab">
-          <table class="table"><thead><tr><th>User</th><th>Movie</th><th>Review</th></tr></thead><tbody><tr><td>Bob</td><td>Movie B</td><td>Excellent!</td></tr></tbody></table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ADMIN -->
-    <section id="admin" class="content-section">
-      <h4>Admin Profile</h4>
-      <p>Name: Admin</p>
-      <p>Email: admin@filmfusion.com</p>
-    </section>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    const menus = document.querySelectorAll('.menu');
-    const sections = document.querySelectorAll('.content-section');
-    menus.forEach(menu => menu.addEventListener('click', e => {
-      e.preventDefault();
-      menus.forEach(m => m.classList.remove('active'));
-      menu.classList.add('active');
-      sections.forEach(sec => sec.style.display = sec.id === menu.dataset.target ? 'block' : 'none');
-    }));
-
-    // Slideshow script
-    let slideIndex = 0;
-    const slides = document.querySelectorAll(".slide");
-    function showSlides() {
-      slides.forEach(slide => slide.style.display = "none");
-      slideIndex++;
-      if (slideIndex > slides.length) slideIndex = 1;
-      slides[slideIndex - 1].style.display = "block";
-      setTimeout(showSlides, 2500);
-    }
-    showSlides();
-
-    function confirmDelete() {
-      if (confirm('Are you sure you want to delete this movie?')) {
-        alert('Deleted successfully!');
-      }
-    }
-    
-  </script>
-</body>
-</html>
+        </div
