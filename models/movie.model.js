@@ -1,25 +1,37 @@
-const db = require('../config/db.config');
+ const db = require('../config/db.config');
 
-const Movie = {
-  findAll: (callback) => {
-    db.query('SELECT * FROM movies', callback);
-  },
+// Create a new movie record
+exports.create = (movieData, callback) => {
+  const sql = `
+    INSERT INTO movies 
+    (title, description, release_date, genre, director, language, country, budget, revenue, runtime, poster_url, trailer_url) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
 
-  findById: (id, callback) => {
-    db.query('SELECT * FROM movies WHERE movie_id = ?', [id], callback);
-  },
+  const values = [
+    
+  movieData.title,
+  movieData.description,
+  movieData.release_date,
+  movieData.genre,
+  movieData.director,
+  movieData.language,
+  movieData.country,
+  movieData.budget,
+  movieData.revenue,
+  movieData.runtime,
+  movieData.poster_url,
+  movieData.trailer_url
 
-  create: (data, callback) => {
-    db.query('INSERT INTO movies SET ?', data, callback);
-  },
+  ];
 
-  update: (id, data, callback) => {
-    db.query('UPDATE movies SET ? WHERE movie_id = ?', [data, id], callback);
-  },
+  console.log('🚀 Inserting Movie:', values); // ✅ Helpful debug
 
-  delete: (id, callback) => {
-    db.query('DELETE FROM movies WHERE movie_id = ?', [id], callback);
-  }
+  db.query(sql, values, callback);
 };
 
-module.exports = Movie;
+// Get all movies
+exports.findAll = (callback) => {
+  const sql = "SELECT * FROM movies";
+  db.query(sql, callback);
+};
