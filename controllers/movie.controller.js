@@ -43,8 +43,6 @@ exports.listMovies = (req, res) => {
   });
 };
 
-
-
 // Show a single movie by ID
 exports.showMovie = (req, res) => {
   Movie.findById(req.params.id, (err, result) => {

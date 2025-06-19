@@ -343,8 +343,6 @@
             </div>
 
 <!-- View Movies Tab -->
- <div class="tab-pane fade <%= activeTab === 'view-movies' ? 'show active' : '' %>" id="view-movies" role="tabpanel">
-
 <div class="tab-pane fade" id="view-movies" role="tabpanel">
     <div class="card mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -368,20 +366,7 @@
                     </thead>
                     <tbody>
                         <!-- Movie data will be dynamically populated here -->
-                         <% movies.forEach(movie => { %>
-<tr>
-  <td><img src="<%= movie.poster_url %>" style="width: 60px; height: 80px;" /></td>
-  <td><%= movie.title %></td>
-  <td><%= movie.release_date %></td>
-  <td><%= movie.genre %></td>
-  <td><%= movie.language %></td>
-  <td><%= movie.director %></td>
-  <td><%= movie.poster_url %></td>
-  <td><%= movie.trailer_url %></td>
-  <td><%= movie.country %></td>
-</tr>
-<% }); %>
-
+                         
                     </tbody>
                 </table>
             </div>
