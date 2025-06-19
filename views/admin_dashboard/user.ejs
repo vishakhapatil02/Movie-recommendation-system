@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>User List</h3>
+                        <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- User data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        // Function to load user data from the backend
+        function loadUserData() {
+            $.ajax({
+                url: 'https://your-backend-api.com/users', // Replace with your backend API URL
+                method: 'GET',
+                success: function(data) {
+                    populateUserTable(data);
+                },
+                error: function(error) {
+                    console.error('Error fetching user data:', error);
+                }
+            });
+        }
+
+        // Function to populate user data into the table
+        function populateUserTable(users) {
+            const tbody = $('#usersTable tbody');
+            tbody.empty(); // Clear existing rows
+
+            users.forEach(user => {
+                const row = `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info me-1" onclick="viewUser(${user.id})"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editUser(${user.id})"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.id})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        }
+
+        // Function to add a new user
+        $('#addUserForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const newUser = {
+                name: $('#name').val(),
+                email: $('#email').val()
+            };
+
+            $.ajax({
+                url: 'https://your-backend-api.com/users', // Replace with your backend API URL
+                method: 'POST',
+                data: JSON.stringify(newUser),
+                contentType: 'application/json',
+                success: function() {
+                    loadUserData(); // Reload user data
+                    $('#addUserModal').modal('hide'); // Hide modal
+                    $('#addUserForm').trigger('reset'); // Reset form fields
+                },
+                error: function(error) {
+                    console.error('Error adding user:', error);
+                }
+            });
+        });
+
+        // Function to view user details
+        function viewUser(id) {
+            // Implement view user functionality
+            alert(`View user with ID: ${id}`);
+        }
+
+        // Function to edit user
+        function editUser(id) {
+            // Implement edit user functionality
+            alert(`Edit user with ID: ${id}`);
+        }
+
+        // Function to delete user
+        function deleteUser(id) {
+            $.ajax({
+                url: `https://your-backend-api.com/users/${id}`, // Replace with your backend API URL
+                method: 'DELETE',
+                success: function() {
+                    loadUserData(); // Reload user data
+                },
+                error: function(error) {
+                    console.error('Error deleting user:', error);
+                }
+            });
+        }
+
+        // Load user data on page load
+        $(document).ready(function() {
+            loadUserData();
+        });
+    </script>
+</body>
+</html>
+
