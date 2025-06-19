@@ -1,4 +1,4 @@
- const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const db = require('../config/db.config');
 
@@ -33,7 +33,7 @@ exports.getdashboard = (req, res) => {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    res.render('admin/dashboard', { username: decoded.username });
+    res.render('admin_dashboard/dashboard', { username: decoded.username });
   } catch (err) {
     res.clearCookie('token');
     res.redirect('/login');
@@ -141,11 +141,11 @@ exports.postlogin = (req, res) => {
     if (user.role === 'ADMIN') {
       return res.redirect('/admin/dashboard');
     } else {
-      return res.render('movies/add', {
-        title: 'Add Movie',
+      return res.render('admin_dashboard/dashboard', {
+        title: 'Movies',
         username: user.username,
         role: user.role
       });
     }
   });
-}
+};

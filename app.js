@@ -25,11 +25,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use('/',authRoutes);
 
-// Routes
-// app.use('/', authRoutes);
-app.get('/admin/dashboard', (req, res) => {
-    res.render('admin/dashboard', { title: 'Admin Dashboard' });
-});   
 
 app.use('/movies', movieRoutes); 
 app.use('/',authRoutes);
