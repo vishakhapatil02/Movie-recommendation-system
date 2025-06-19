@@ -1,12 +1,12 @@
- const db = require('../config/db.config');
+const db = require('../config/db.config');
 
-// Create a new movie record
 exports.create = (movieData, callback) => {
   const sql = `
     INSERT INTO movies 
     (title, description, release_date, genre, director, language, country, budget, revenue, runtime, poster_url, trailer_url) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
+
   const values = [
     movieData.title,
     movieData.description,
@@ -21,8 +21,10 @@ exports.create = (movieData, callback) => {
     movieData.poster_url,
     movieData.trailer_url
   ];
+
   db.query(sql, values, callback);
 };
+
 // Find a movie by ID 
 exports.findById = (id, callback) => {
   const sql = "SELECT * FROM movies WHERE movie_id = ?";

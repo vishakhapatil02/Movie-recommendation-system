@@ -22,7 +22,7 @@ router.get('/admin/movies', (req, res) => {
   const success = req.query.success;
   Movie.findAll((err, results) => {
     if (err) return res.status(500).send("Error loading movies");
-    res.render('admin_dashboard/dashboard', { movies: results, success });
+    res.render('admin_dashboard/dashboard', { movies: results, success: success, activeTab: 'view-movies' });
   });
 });
 
