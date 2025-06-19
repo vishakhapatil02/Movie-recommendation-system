@@ -18,20 +18,22 @@ exports.showCreateForm = (req, res) => {
 exports.createMovie = (req, res) => {
   const data = req.body;
   const poster = req.file ? `/uploads/${req.file.filename}` : null;
-  const movieData = { ...data, poster_url: poster };
 
-  
+  const movieData = {
+    ...data,
+    poster_url: poster
+  };
 
-  console.log("Prepared Movie Data:", movieData); // ✅ Debugging
-  if (!movieData.title || !movieData.description || !movieData.release_date) {      
-    return res.status(400).send("Title, description, and release date are required.");
-  }
-
-  Movie.create(movieData, (err) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.redirect('/admin/movies');
+  Movie.create(movieData, (err, result) => {
+    if (err) {
+      console.error("DB INSERT ERROR:", err);
+      return res.status(500).send("Failed to insert movie");
+    }
+    // ✅ Redirect to View Movies tab with success alert
+    res.redirect('/admin/movies?success=1');
   });
 };
+
 exports.listMovies = (req, res) => {
   Movie.findAll((err, results) => {
     if (err) return res.status(500).json({ error: err.message });

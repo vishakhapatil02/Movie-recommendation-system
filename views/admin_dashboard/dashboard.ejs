@@ -219,6 +219,13 @@
 
     <!-- Main Content -->
     <div id="main-content" class="p-4">
+        <% if (typeof success !== 'undefined') { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    ✅ Movie added successfully!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
         <!-- Toast Notifications -->
         <div class="toast-container">
             <div class="toast align-items-center text-white bg-success" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
