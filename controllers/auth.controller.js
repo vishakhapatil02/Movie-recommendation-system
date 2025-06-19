@@ -1,4 +1,4 @@
- const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const db = require('../config/db.config');
 
@@ -33,7 +33,7 @@ exports.getdashboard = (req, res) => {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
-    res.render('admin/dashboard', { username: decoded.username });
+    res.render('admin_dashboard/dashboard', { username: decoded.username });
   } catch (err) {
     res.clearCookie('token');
     res.redirect('/login');
@@ -96,7 +96,6 @@ exports.postregister = async (req, res) => {
 };
 
 // POST: Login user
- // POST: Login user
 exports.postlogin = (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const password = req.body.password?.trim();
@@ -105,15 +104,19 @@ exports.postlogin = (req, res) => {
     return res.render('login', { error: "Username and password are required." });
   }
 
+  // Admin hardcoded login
   if (username === 'admin' && password === 'admin123') {
     const token = jwt.sign({ username: 'admin', role: 'ADMIN' }, SECRET_KEY, { expiresIn: '1h' });
     res.cookie('token', token, { httpOnly: true });
-    return res.redirect('/admin/dashboard'); // ✅ FIXED
+    return res.redirect('/admin/dashboard');
   }
 
   const sql = "SELECT * FROM users WHERE username = ?";
   db.query(sql, [username], async (err, results) => {
-    if (err) return res.render('login', { error: "Database error." });
+    if (err) {
+      console.error("DB error:", err);
+      return res.render('login', { error: "Database error." });
+    }
 
     if (results.length === 0) {
       return res.render('login', { error: "Invalid username or password." });
@@ -133,20 +136,16 @@ exports.postlogin = (req, res) => {
     );
 
     res.cookie('token', token, { httpOnly: true });
-    return res.redirect('/admin/dashboard'); // ✅
+
+    // Redirect based on role
+    if (user.role === 'ADMIN') {
+      return res.redirect('/admin/dashboard');
+    } else {
+      return res.render('admin_dashboard/dashboard', {
+        title: 'Movies',
+        username: user.username,
+        role: user.role
+      });
+    }
   });
-};
-
-// GET: Admin Dashboard Page
-exports.getdashboard = (req, res) => {
-  const token = req.cookies.token;
-  if (!token) return res.redirect('/login');
-
-  try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    res.render('admin_dashboard/dashboard', { username: decoded.username }); // ✅
-  } catch (err) {
-    res.clearCookie('token');
-    res.redirect('/login');
-  }
 };
