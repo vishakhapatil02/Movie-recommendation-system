@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
+    <title>Frontend Developer: Today's Tasks</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
@@ -85,11 +85,6 @@
             border-radius: 0 0 0.35rem 0.35rem;
         }
         
-        .welcome-message {
-            margin-top: 40px; /* Adjust the value as needed */
-            text-align: center;
-        }
-        
         @media (max-width: 768px) {
             #sidebar {
                 margin-left: calc(-1 * var(--sidebar-width));
@@ -116,11 +111,9 @@
             <button class="btn btn-link text-dark" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
             </button>
-             <a class="navbar-brand ms-2 d-flex align-items-center" href="#" style="font-size: 1.5rem; font-weight: bold; color: #4e73df;">
-    <img src="/images/logofilmfussion.webp" alt="Logo" style="height: 35px; width: auto; margin-right: 8px;">
-    <span><i>FILM<span style="color: rgb(20, 114, 25); font-weight: bold;">Fussion</span></i></span>
-</a>
-
+            <a class="navbar-brand ms-2" href="#">
+                <i class="fas fa-film me-2"></i>Frontend Developer Tasks
+            </a>
             <div class="d-flex align-items-center">
                 <div class="dropdown">
                     <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -139,7 +132,7 @@
     <!-- Sidebar -->
     <div id="sidebar">
         <div class="sidebar-header py-3 px-4">
-            <h5 class="mb-0">User Dashboard</h5>
+            <h5 class="mb-0">Today's Tasks</h5>
         </div>
         <hr class="sidebar-divider my-0">
         <div class="sidebar-menu">
@@ -178,15 +171,90 @@
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div id="main-content" class="p-4">
-        <!-- Tab Content -->
-        <div class="tab-content" id="mainTabContent">
-            
-                   <!-- Dashboard Overview Tab -->
-<div class="tab-pane fade show active" id="dashboard" role="tabpanel">
-    <h4 class="mb-4 text-primary">👋 Welcome to Film Fusion!</h4>
+             <!-- Ratings & Reviews Tab Content -->
+<div class="tab-pane fade" id="ratings" role="tabpanel">
     <div class="card mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Ratings & Reviews</h6>
+        </div>
+        <div class="card-body">
+            <!-- Sub-tabs -->
+            <ul class="nav nav-tabs mb-3" id="ratingsTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="my-ratings-tab" data-bs-toggle="tab" data-bs-target="#my-ratings" type="button" role="tab">My Ratings</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="write-review-tab" data-bs-toggle="tab" data-bs-target="#write-review" type="button" role="tab">Write a Review</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pending-reviews-tab" data-bs-toggle="tab" data-bs-target="#pending-reviews" type="button" role="tab">Pending Reviews</button>
+                </li>
+            </ul>
+
+            <!-- Sub-tab content -->
+            <div class="tab-content" id="ratingsTabContent">
+                <!-- My Ratings -->
+                <div class="tab-pane fade show active" id="my-ratings" role="tabpanel">
+                    <ul class="list-group">
+                        <!-- Example item -->
+                        <li class="list-group-item">
+                            <strong>Movie Title:</strong> Interstellar <br>
+                            <span class="text-warning">★★★★★</span> - <em>2025-06-20</em><br>
+                            "Mind-blowing sci-fi experience!"
+                        </li>
+                        <!-- More ratings dynamically loaded -->
+                    </ul>
+                </div>
+
+                <!-- Write a Review -->
+                <div class="tab-pane fade" id="write-review" role="tabpanel">
+                    <form id="reviewForm" method="POST" action="/submit-review">
+                        <div class="mb-3">
+                            <label for="movieSelect" class="form-label">Select Movie</label>
+                            <select class="form-select" id="movieSelect" name="movie_id" required>
+                                <option selected disabled>-- Choose a movie --</option>
+                                <option value="1">Inception</option>
+                                <option value="2">The Matrix</option>
+                                <!-- Load from DB -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating</label>
+                            <select class="form-select" id="rating" name="rating" required>
+                                <option value="5">★★★★★</option>
+                                <option value="4">★★★★</option>
+                                <option value="3">★★★</option>
+                                <option value="2">★★</option>
+                                <option value="1">★</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reviewText" class="form-label">Review</label>
+                            <textarea class="form-control" id="reviewText" name="review" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+
+                <!-- Pending Reviews -->
+                <div class="tab-pane fade" id="pending-reviews" role="tabpanel">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            The Batman (2022)
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Dune
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        </li>
+                        <!-- Load dynamically from DB -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
             <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
@@ -215,3 +283,7 @@
     </script>
 </body>
 </html>
+
+            
+
+            
