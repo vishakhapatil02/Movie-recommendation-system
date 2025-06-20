@@ -1,241 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --sidebar-width: 250px;
-            --navbar-height: 60px;
-            --primary-color: #4e73df;
-            --secondary-color: #858796;
-        }
-        
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: #f8f9fc;
-            overflow-x: hidden;
-        }
-        
-        #sidebar {
-            width: var(--sidebar-width);
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: linear-gradient(180deg, var(--primary-color) 10%, #224abe 100%);
-            color: white;
-            transition: all 0.3s;
-            z-index: 1000;
-            padding-top: var(--navbar-height);
-        }
-        
-        #sidebar.collapsed {
-            margin-left: calc(-1 * var(--sidebar-width));
-        }
-        
-        #main-content {
-            margin-left: var(--sidebar-width);
-            padding-top: var(--navbar-height);
-            transition: all 0.3s;
-        }
-        
-        #main-content.expanded {
-            margin-left: 0;
-        }
-        
-        #navbar {
-            height: var(--navbar-height);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1001;
-            background-color: white;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-        }
-        
-        .sidebar-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 1rem;
-            display: block;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .sidebar-link:hover, .sidebar-link.active {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .card {
-            border: none;
-            border-radius: 0.35rem;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
-        }
-        
-        .tab-content {
-            padding: 1.5rem;
-            background-color: white;
-            border-radius: 0 0 0.35rem 0.35rem;
-        }
-        
-        .welcome-message {
-            margin-top: 40px; /* Adjust the value as needed */
-            text-align: center;
-        }
-        
-        @media (max-width: 768px) {
-            #sidebar {
-                margin-left: calc(-1 * var(--sidebar-width));
-            }
-            
-            #sidebar.collapsed {
-                margin-left: 0;
-            }
-            
-            #main-content {
-                margin-left: 0;
-            }
-            
-            #main-content.expanded {
-                margin-left: var(--sidebar-width);
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --sidebar-width: 250px;
+      --navbar-height: 60px;
+      --primary-color: #4e73df;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f8f9fc;
+      overflow-x: hidden;
+    }
+
+    #sidebar {
+      width: var(--sidebar-width);
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, var(--primary-color) 10%, #224abe 100%);
+      color: white;
+      padding-top: var(--navbar-height);
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+
+    #sidebar.collapsed {
+      margin-left: calc(-1 * var(--sidebar-width));
+    }
+
+    #main-content {
+      margin-left: var(--sidebar-width);
+      padding-top: var(--navbar-height);
+      transition: all 0.3s;
+    }
+
+    #main-content.expanded {
+      margin-left: 0;
+    }
+
+    #navbar {
+      height: var(--navbar-height);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1001;
+      background-color: white;
+      box-shadow: 0 0.15rem 1.75rem rgba(58, 59, 69, 0.15);
+    }
+
+    .sidebar-link {
+      color: rgba(255, 255, 255, 0.8);
+      padding: 1rem;
+      display: block;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .card {
+      border: none;
+      border-radius: 0.35rem;
+      box-shadow: 0 0.15rem 1.75rem rgba(58, 59, 69, 0.1);
+    }
+
+    .tab-content {
+      padding: 1.5rem;
+      background-color: white;
+      border-radius: 0 0 0.35rem 0.35rem;
+    }
+
+    @media (max-width: 768px) {
+      #sidebar {
+        margin-left: calc(-1 * var(--sidebar-width));
+      }
+
+      #sidebar.collapsed {
+        margin-left: 0;
+      }
+
+      #main-content {
+        margin-left: 0;
+      }
+
+      #main-content.expanded {
+        margin-left: var(--sidebar-width);
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container-fluid">
-            <button class="btn btn-link text-dark" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-             <a class="navbar-brand ms-2 d-flex align-items-center" href="#" style="font-size: 1.5rem; font-weight: bold; color: #4e73df;">
-    <img src="/images/logofilmfussion.webp" alt="Logo" style="height: 35px; width: auto; margin-right: 8px;">
-    <span><i>FILM<span style="color: rgb(20, 114, 25); font-weight: bold;">Fussion</span></i></span>
-</a>
-
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle fa-lg"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                    </ul>
-                </div>
-            </div>
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container-fluid">
+      <button class="btn btn-link text-dark" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a class="navbar-brand ms-2 d-flex align-items-center" href="#" style="font-size: 1.5rem; font-weight: bold; color: #4e73df;">
+        <img src="/images/logofilmfussion.webp" alt="Logo" style="height: 35px; width: auto; margin-right: 8px;">
+        <span><i>FILM<span style="color: rgb(20, 114, 25); font-weight: bold;">Fussion</span></i></span>
+      </a>
+      <div class="d-flex align-items-center">
+        <div class="dropdown">
+          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user-circle fa-lg"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+          </ul>
         </div>
-    </nav>
-
-    <!-- Sidebar -->
-    <div id="sidebar">
-        <div class="sidebar-header py-3 px-4">
-            <h5 class="mb-0">User Dashboard</h5>
-        </div>
-        <hr class="sidebar-divider my-0">
-        <div class="sidebar-menu">
-            <ul class="list-unstyled">
-                <li>
-                    <a href="#dashboard.ejs" class="sidebar-link active" data-tab="dashboard">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard Overview
-                    </a>
-                </li>
-                <li>
-                    <a href="#movies.ejs" class="sidebar-link" data-tab="movies">
-                        <i class="fas fa-film"></i> 🎥 Movies
-                    </a>
-                </li>
-                <li>
-                    <a href="#watchlist.ejs" class="sidebar-link" data-tab="watchlist">
-                        <i class="fas fa-clock"></i> 🗓 Watchlist
-                    </a>
-                </li>
-                <li>
-                    <a href="#ratings.ejs" class="sidebar-link" data-tab="ratings">
-                        <i class="fas fa-star"></i> ⭐ Ratings & Reviews
-                    </a>
-                </li>
-                <li>
-                    <a href="#userProfile.ejs" class="sidebar-link" data-tab="user-profile">
-                        <i class="fas fa-user"></i> 👤 User Profile
-                    </a>
-                </li>
-                <li>
-                    <a href="#logout.ejs" class="sidebar-link">
-                        <i class="fas fa-sign-out-alt"></i> 🚪 Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
+      </div>
     </div>
-    <!-- Movies Tab -->
-<div class="tab-pane fade" id="movies" role="tabpanel">
-  <%- include('user_dashboard/movies') %>
-</div>
+  </nav>
 
-<!-- Watchlist Tab -->
-<div class="tab-pane fade" id="watchlist" role="tabpanel">
-  <%- include('user_dashboard/watchlist') %>
-</div>
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <div class="sidebar-header py-3 px-4">
+      <h5 class="mb-0">User Dashboard</h5>
+    </div>
+    <hr class="sidebar-divider my-0">
+    <div class="sidebar-menu">
+      <ul class="list-unstyled">
+        <li>
+          <a href="#" class="sidebar-link active" data-tab="dashboard">
+            <i class="fas fa-tachometer-alt"></i> Dashboard Overview
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link" data-tab="movies">
+            <i class="fas fa-film"></i> 🎥 Movies
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link" data-tab="watchlist">
+            <i class="fas fa-clock"></i> 🗓 Watchlist
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link" data-tab="ratings">
+            <i class="fas fa-star"></i> ⭐ Ratings & Reviews
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link" data-tab="user-profile">
+            <i class="fas fa-user"></i> 👤 User Profile
+          </a>
+        </li>
+        <li>
+          <a href="/logout" class="sidebar-link">
+            <i class="fas fa-sign-out-alt"></i> 🚪 Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
-<!-- Ratings & Reviews Tab -->
-<div class="tab-pane fade" id="ratings" role="tabpanel">
-  <%- include('user_dashboard/ratings_review') %>
-</div>
+  <!-- Main Content -->
+  <div id="main-content" class="p-4">
+    <div class="tab-content" id="mainTabContent">
+      <!-- Dashboard Overview -->
+      <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+        <h4 class="mb-4 text-primary">👋 Welcome to Film Fusion!</h4>
+        <div class="card mb-4">
+          <div class="card-body">
+            <p>This is your dashboard overview. Quick stats and recent activity appear here.</p>
+          </div>
+        </div>
+      </div>
 
-<!-- Profile Tab -->
-<div class="tab-pane fade" id="user-profile" role="tabpanel">
-  <%- include('user_dashboard/profile') %>
-</div>
+      <!-- Movies Tab -->
+      <div class="tab-pane fade" id="movies" role="tabpanel">
+        <%- include('user_dashboard/movie') %>
+      </div>
 
-<!-- Logout Tab -->
-<div class="tab-pane fade" id="logout" role="tabpanel">
-  <%- include('user_dashboard/logout') %>
-</div>
+      <!-- Watchlist Tab -->
+      <div class="tab-pane fade" id="watchlist" role="tabpanel">
+        <%- include('user_dashboard/watchlist') %>
+      </div>
 
-    <!-- Main Content -->
-    <div id="main-content" class="p-4">
-        <!-- Tab Content -->
-        <div class="tab-content" id="mainTabContent">
-            
-                   <!-- Dashboard Overview Tab -->
-<div class="tab-pane fade show active" id="dashboard" role="tabpanel">
-    <h4 class="mb-4 text-primary">👋 Welcome to Film Fusion!</h4>
-    <div class="card mb-4">
-            <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <script>
-        $(document).ready(function() {
-            // Sidebar toggle functionality
-            $('#sidebarToggle').click(function() {
-                $('#sidebar').toggleClass('collapsed');
-                $('#main-content').toggleClass('expanded');
-            });
+      <!-- Ratings & Reviews Tab -->
+      <div class="tab-pane fade" id="ratings" role="tabpanel">
+        <%- include('user_dashboard/ratings_review') %>
+      </div>
 
-            // Tab navigation
-            $('[data-tab]').click(function(e) {
-                e.preventDefault();
-                const tabId = $(this).data('tab');
-                $('.tab-pane').removeClass('show active');
-                $('#' + tabId).addClass('show active');
-                
-                // Update active state in sidebar
-                $('.sidebar-link').removeClass('active');
-                $(this).addClass('active');
-            });
-        });
-    </script>
+      <!-- User Profile Tab -->
+      <div class="tab-pane fade" id="user-profile" role="tabpanel">
+        <%- include('user_dashboard/Profile') %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Sidebar toggle
+      $('#sidebarToggle').click(function () {
+        $('#sidebar').toggleClass('collapsed');
+        $('#main-content').toggleClass('expanded');
+      });
+
+      // Tab switching
+      $('[data-tab]').click(function (e) {
+        e.preventDefault();
+        const tabId = $(this).data('tab');
+        $('.tab-pane').removeClass('show active');
+        $('#' + tabId).addClass('show active');
+
+        $('.sidebar-link').removeClass('active');
+        $(this).addClass('active');
+      });
+    });
+  </script>
 </body>
 </html>
