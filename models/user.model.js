@@ -9,7 +9,7 @@ exports.postregister = async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10); // Hash password
     const sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-    db.query(sql, [username, email, hashedPassword], (err) => {
+    db.query(sql, [username, email, hashedPassword, role], (err) => {
       if (err) {
         console.error("DB error:", err);
         return res.send("Registration failed");
