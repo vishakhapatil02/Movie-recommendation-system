@@ -1,6 +1,8 @@
-const express = require('express');
+ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key';
 
 // Login & Register Routes
 router.get('/login', authController.getlogin);
@@ -28,6 +30,24 @@ router.get('/admin', (req, res) => res.redirect('/admin/dashboard'));
 // View Snippets (Movies)
 router.get('/snippets/view', (req, res) => {
   res.render('snippets/view', { title: 'View Movies' });
+});
+
+// user_dashboard
+router.get('/user/dashboard', (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.redirect('/login');
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    if (decoded.role === 'USER') {
+      res.render('user_dashboard/dashboard', { username: decoded.username });
+    } else {
+      res.redirect('/login');
+    }
+  } catch (err) {
+    res.clearCookie('token');
+    res.redirect('/login');
+  }
 });
 
 module.exports = router;
