@@ -26,10 +26,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/', authRoutes);         // 
 app.use('/movies', movieRoutes); // 
 
-// Partials
-app.get('/partials/:name', (req, res) => {
-  const viewName = req.params.name;
-  res.render(`snippets/${viewName}`);
-});
+
 
 module.exports = app;
