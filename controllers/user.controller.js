@@ -7,22 +7,22 @@ const SECRET_KEY = process.env.SECRET_KEY || 'your_secret_key';
 
 // GET: Login Page
 exports.getlogin = (req, res) => {
-    res.render('login', { error: null });
+    res.render('/login', { error: null });
 };
 
 // GET: Register Page
 exports.getregister = (req, res) => {
-    res.render('register');
+    res.render('/register');
 };
 
 // GET: Home Page
 exports.gethome = (req, res) => {
-    res.render('home');
+    res.render('/home');
 };
 
 // GET: Index Page
 exports.IndexPage = (req, res) => {
-    res.render('index');
+    res.render('/index');
 };
 
 // GET: Admin Dashboard Page (Protected)
@@ -33,7 +33,7 @@ exports.getdashboard = (req, res) => {
     try {
         const decoded = jwt.verify(token, SECRET_KEY);
         if (decoded.role === 'ADMIN') {
-            res.render('dashboard', { username: decoded.username, activeTab: 'add-movie' });
+            res.render('admin_dashboard/dashboard', { username: decoded.username, activeTab: 'add-movie' });
         } else {
             res.redirect('/user/dashboard');
         }
@@ -77,7 +77,7 @@ exports.postregister = async (req, res) => {
     }
 
     if (password.length < 6) {
-        return res.render('register', { error: 'Password must be at least 6 characters.' });
+        return res.render('/register', { error: 'Password must be at least 6 characters.' });
     }
 
     db.query('SELECT * FROM users WHERE username = ? OR email = ?', [username, email], async (err, results) => {
@@ -105,13 +105,13 @@ exports.postregister = async (req, res) => {
             );
         } catch (err) {
             console.error('Hashing error:', err);
-            res.render('register', { error: 'Error during registration.' });
+            res.render('/register', { error: 'Error during registration.' });
         }
     });
 };
 
 // POST: Login user
-exports.postlogin = (req, res) => {
+/*exports.postlogin = (req, res) => {
     const username = req.body.username?.trim().toLowerCase();
     const password = req.body.password?.trim();
 
@@ -123,7 +123,7 @@ exports.postlogin = (req, res) => {
     if (username === 'admin' && password === 'admin123') {
         const token = jwt.sign({ username: 'admin', role: 'ADMIN' }, SECRET_KEY, { expiresIn: '1h' });
         res.cookie('token', token, { httpOnly: true });
-        return res.redirect('/admin/dashboard');
+        return res.redirect('/admin_dashboard/dashboard');
     }
 
     // User login
@@ -147,13 +147,54 @@ exports.postlogin = (req, res) => {
             res.cookie('token', token, { httpOnly: true });
 
             if (user.role === 'ADMIN') {
-                return res.redirect('/admin/dashboard');
-            } else {
+                return res.redirect('/admin_dashboard/dashboard');
+            } else if(user.role === 'USER'){
                 return res.redirect('/user/dashboard');
             }
         });
     });
+};*/
+
+
+exports.postlogin = (req, res) => {
+  const username = req.body.username?.trim().toLowerCase();
+  const password = req.body.password?.trim();
+
+  if (!username || !password) {
+    return res.render('login', { error: 'Username and password are required.' });
+  }
+
+  const userSql = "SELECT * FROM users WHERE username = ?";
+  db.query(userSql, [username], (err, results) => {
+    if (err) return res.render('login', { error: 'Database error.' });
+    if (results.length === 0) return res.render('login', { error: 'Invalid username or password.' });
+
+    const user = results[0];
+
+    bcrypt.compare(password, user.password, (err, match) => {
+      if (err || !match) {
+        return res.render('login', { error: 'Invalid username or password.' });
+      }
+
+      // Sign JWT based on stored role
+      const token = jwt.sign(
+        { id: user.user_id, username: user.username, role: user.role },
+        SECRET_KEY,
+        { expiresIn: '1h' }
+      );
+
+      res.cookie('token', token, { httpOnly: true });
+
+      // Redirect based on role
+      if (user.role === 'ADMIN') {
+        return res.redirect('/admin/dashboard');
+      } else {
+        return res.redirect('/user/dashboard');
+      }
+    });
+  });
 };
+
 
 // Logout
 exports.logout = (req, res) => {

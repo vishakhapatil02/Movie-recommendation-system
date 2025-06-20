@@ -24,22 +24,16 @@ router.get('/home', authController.IndexPage);
 router.get('/admin/dashboard', authController.getAdminDashboard);
 router.get('/user/dashboard', authController.getUserDashboard);
 
-router.get('/',(req, res) => res.redirect('login'));
+
 // Redirect root to /indexpage
 router.get('/', (req, res) => res.redirect('/indexpage'));
 
-// Redirect /admin to /admin/dashboard
-router.get('/admin', (req, res) => res.redirect('/admin/dashboard'));
-
-// View Snippets (Movies)
-router.get('/snippets/view', (req, res) => {
-  res.render('snippets/view', { title: 'View Movies' });
-});
+ 
 
 // user_dashboard
 router.get('/user/dashboard', (req, res) => {
   const token = req.cookies.token;
-  if (!token) return res.redirect('/login');
+  if (!token) return res.redirect('/user');
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
@@ -56,7 +50,7 @@ router.get('/user/dashboard', (req, res) => {
 // Admin dashboard route
 router.get('/admin/dashboard', (req, res) => {
   const token = req.cookies.token;
-  if (!token) return res.redirect('/login');
+  if (!token) return res.redirect('/admin');
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
@@ -67,7 +61,7 @@ router.get('/admin/dashboard', (req, res) => {
     }
   } catch (err) {
     res.clearCookie('token');
-    res.redirect('/login');
+    res.redirect('/admin/dashboard');
   }
 });
 
