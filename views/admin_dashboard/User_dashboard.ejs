@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Developer: Today's Tasks</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --navbar-height: 60px;
+            --primary-color: #4e73df;
+            --secondary-color: #858796;
+        }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8f9fc;
+            overflow-x: hidden;
+        }
+        
+        #sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: linear-gradient(180deg, var(--primary-color) 10%, #224abe 100%);
+            color: white;
+            transition: all 0.3s;
+            z-index: 1000;
+            padding-top: var(--navbar-height);
+        }
+        
+        #sidebar.collapsed {
+            margin-left: calc(-1 * var(--sidebar-width));
+        }
+        
+        #main-content {
+            margin-left: var(--sidebar-width);
+            padding-top: var(--navbar-height);
+            transition: all 0.3s;
+        }
+        
+        #main-content.expanded {
+            margin-left: 0;
+        }
+        
+        #navbar {
+            height: var(--navbar-height);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            background-color: white;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        
+        .sidebar-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            display: block;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+        }
+        
+        .tab-content {
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 0 0 0.35rem 0.35rem;
+        }
+        
+        @media (max-width: 768px) {
+            #sidebar {
+                margin-left: calc(-1 * var(--sidebar-width));
+            }
+            
+            #sidebar.collapsed {
+                margin-left: 0;
+            }
+            
+            #main-content {
+                margin-left: 0;
+            }
+            
+            #main-content.expanded {
+                margin-left: var(--sidebar-width);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container-fluid">
+            <button class="btn btn-link text-dark" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand ms-2" href="#">
+                <i class="fas fa-film me-2"></i>Frontend Developer Tasks
+            </a>
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle fa-lg"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <div class="sidebar-header py-3 px-4">
+            <h5 class="mb-0">Today's Tasks</h5>
+        </div>
+        <hr class="sidebar-divider my-0">
+        <div class="sidebar-menu">
+            <ul class="list-unstyled">
+                <li>
+                    <a href="#dashboard" class="sidebar-link active" data-tab="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="#movies" class="sidebar-link" data-tab="movies">
+                        <i class="fas fa-film"></i> 🎥 Movies
+                    </a>
+                </li>
+                <li>
+                    <a href="#watchlist" class="sidebar-link" data-tab="watchlist">
+                        <i class="fas fa-clock"></i> 🗓 Watchlist
+                    </a>
+                </li>
+                <li>
+                    <a href="#ratings" class="sidebar-link" data-tab="ratings">
+                        <i class="fas fa-star"></i> ⭐ Ratings & Reviews
+                    </a>
+                </li>
+                <li>
+                    <a href="#userProfile" class="sidebar-link" data-tab="user-profile">
+                        <i class="fas fa-user"></i> 👤 User Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="#logout" class="sidebar-link">
+                        <i class="fas fa-sign-out-alt"></i> 🚪 Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="p-4">
+        <!-- Tab Content -->
+        <div class="tab-content" id="mainTabContent">
+            <!-- Dashboard Overview Tab -->
+            <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Dashboard Layout Overview</h6>
+                    </div>
+                    <div class="card-body">
+                        <h5>Main Structure:</h5>
+                        <ul>
+                            <li>Navbar (Top)</li>
+                            <li>Sidebar (Left)</li>
+                            <li>Main Content Area (Right)</li>
+                        </ul>
+                        <h5>Framework:</h5>
+                        <p>User Bootstrap for a responsive SPA layout.</p>
+                        <h5>Navbar Features:</h5>
+                        <ul>
+                            <li>Application logo or name (top-left): MovieMatch or CineSuggest</li>
+                            <li>User profile icon (top-right)</li>
+                            <li>Notifications (e.g., new movie recommendations) (optional)</li>
+                            <li>Mobile hamburger menu for small screens</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Movies Page Tab -->
+            <div class="tab-pane fade" id="movies" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Movies Page – Filters & Exploration</h6>
+                    </div>
+                    <div class="card-body">
+                        <h5>Filters UI:</h5>
+                        <ul>
+                            <li>Genre (dropdown)</li>
+                            <li>Language (dropdown)</li>
+                            <li>Release Year Range (slider)</li>
+                            <li>Rating (for rent/purchase) (slider)</li>
+                            <li>Actor</li>
+                            <li>Actress</li>
+                            <li>Director</li>
+                        </ul>
+                        <h5>Default Behavior:</h5>
+                        <p>Display movies in descending order of rating by default.</p>
+                        <h5>Movie Card Info:</h5>
+                        <ul>
+                            <li>Poster image</li>
+                            <li>Title</li>
+                            <li>Genre / Language</li>
+                            <li>Rating stars</li>
+                            <li>Price (if applicable)</li>
+                            <li>Description</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Watchlist Page Tab -->
+            <div class="tab-pane fade" id="watchlist" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Watchlist Page</h6>
+                    </div>
+                    <div class="card-body">
+                        <h5>Tabs or Sections:</h5>
+                        <ul>
+                            <li>✅ Currently Watching – movies in progress or recently started</li>
+                            <li>🕒 To Watch – planned or saved movies</li>
+                            <li>📽 Watched – completed viewing history</li>
+                        </ul>
+                        <h5>Each movie item includes:</h5>
+                        <ul>
+                            <li>Poster</li>
+                            <li>Title</li>
+                            <li>Watch status</li>
+                            <li>Date added/watched</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ratings & Reviews Page Tab -->
+            <div class="tab-pane fade" id="ratings" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Ratings & Reviews Page</h6>
+                    </div>
+                    <div class="card-body">
+                        <h5>TabView with Two Tabs:</h5>
+                        <ul>
+                            <li>My Ratings – List of movies rated by the user</li>
+                            <li>Star ratings, date of review</li>
+                            <li>Review text snippet</li>
+                        </ul>
+                        <h5>Write a Review (Optional Tab):</h5>
+                        <ul>
+                            <li>Select movie</li>
+                            <li>Input rating and review</li>
+                            <li>Submit to backend</li>
+                        </ul>
+                        <h5>Other Optional Tabs:</h5>
+                        <p>Pending Reviews – movies watched but not yet reviewed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Profile Page Tab -->
+            <div class="tab-pane fade" id="user-profile" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">User  Profile Page</h6>
+                    </div>
+                    <div class="card-body">
+                        <h5>Editable user information:</h5>
+                        <ul>
+                            <li>Name</li>
+                            <li>Email</li>
+                            <li>Phone Number (optional)</li>
+                            <li>Password change option</li>
+                            <li>Profile picture/avatar upload</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logout Tab -->
+            <div class="tab-pane fade" id="logout" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Logout</h6>
+                    </div>
+                    <div class="card-body">
+                        <p>Prompt: “Are you sure you want to logout?”</p>
+                        <p>On confirmation: Redirect to login page.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Sidebar toggle functionality
+            $('#sidebarToggle').click(function() {
+                $('#sidebar').toggleClass('collapsed');
+                $('#main-content').toggleClass('expanded');
+            });
+
+            // Tab navigation
+            $('[data-tab]').click(function(e) {
+                e.preventDefault();
+                const tabId = $(this).data('tab');
+                $('.tab-pane').removeClass('show active');
+                $('#' + tabId).addClass('show active');
+                
+                // Update active state in sidebar
+                $('.sidebar-link').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
+</body>
+</html>
