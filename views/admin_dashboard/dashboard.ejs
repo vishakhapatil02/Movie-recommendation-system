@@ -669,69 +669,43 @@
 
             // Form validation
             $('#addMovieForm').submit(function(e) {
-                e.preventDefault();
-                
-                // Validate form
-                let isValid = true;
-                $(this).find('[required]').each(function() {
-                    if (!$(this).val()) {
-                        $(this).addClass('is-invalid');
-                        isValid = false;
-                    } else {
-                        $(this).removeClass('is-invalid');
-                    }
-                });
-                
-                if (isValid) {
-                    showLoading();
-                    
-                    // Simulate API call
-                    setTimeout(function() {
-                        hideLoading();
-                        showSuccessToast('Movie added successfully!');
-                        $('#addMovieForm')[0].reset();
-                        $('#posterPreview').hide();
-                    }, 1500);
-                }
-            });
-
-            // Delete button click handler
-            $('.btn-danger').click(function() {
-                const itemId = $(this).closest('tr').find('td:first').text();
-                $('#deleteModal').modal('show');
-                
-                $('#confirmDelete').off('click').click(function() {
-                    showLoading();
-                    
-                    // Simulate API call
-                    setTimeout(function() {
-                        hideLoading();
-                        $('#deleteModal').modal('hide');
-                        showSuccessToast('Item deleted successfully!');
-                    }, 1000);
-                });
-            });
-
-            // Helper functions
-            function showLoading() {
-                $('#loadingSpinner').show();
+    e.preventDefault();
+    
+    let isValid = true;
+    $(this).find('[required]').each(function() {
+        if (!$(this).val()) {
+            $(this).addClass('is-invalid');
+            isValid = false;
+        } else {
+            $(this).removeClass('is-invalid');
+        }
+    });
+    
+    if (isValid) {
+        showLoading();
+        const formData = new FormData(this);
+        $.ajax({
+            url: '/movies/admin/movies',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                hideLoading();
+                showSuccessToast('Movie added successfully!');
+                $('#addMovieForm')[0].reset();
+                $('#posterPreview').hide();
+                // Refresh View Movies tab
+                $('#view-movies').load(location.href + ' #view-movies > *');
+            },
+            error: function(xhr) {
+                hideLoading();
+                const errorMsg = xhr.responseText || 'Failed to add movie. Please try again.';
+                showErrorToast(errorMsg);
             }
-
-            function hideLoading() {
-                $('#loadingSpinner').hide();
-            }
-
-            function showSuccessToast(message) {
-                $('#successToast .toast-body').text(message);
-                const toast = new bootstrap.Toast($('#successToast'));
-                toast.show();
-            }
-
-            function showErrorToast(message) {
-                $('#errorToast .toast-body').text(message);
-                const toast = new bootstrap.Toast($('#errorToast'));
-                toast.show();
-            }
+        });
+    }
+});
         });
     </script>
 
