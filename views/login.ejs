@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -66,7 +66,6 @@
       padding: 10px;
       width: 100%;
       transition: background 0.3s ease;
-      background-repeat: no-repeat;
     }
 
     .btn-custom:hover {
@@ -88,6 +87,17 @@
     .register-link a:hover {
       text-decoration: underline;
     }
+
+    /* 🔵 Custom option background colors */
+    select.form-control option[value="user"] {
+      background-color: #d1e7dd; /* light green */
+      color: #000;
+    }
+
+    select.form-control option[value="admin"] {
+      background-color: #f8d7da; /* light red */
+      color: #000;
+    }
   </style>
 </head>
 
@@ -95,44 +105,36 @@
   <div class="login-box">
     <h2>Login</h2>
     <form action="/login" method="POST">
-  <div class="mb-3">
-    <label class="form-label">Username</label>
-    <input type="text" name="username" class="form-control" placeholder="Enter username" required />
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Password</label>
-    <input type="password" name="password" class="form-control" placeholder="Enter password" required />
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Login As</label>
-    <select name="role" class="form-control" required>
-      <option value="" disabled selected>Select Role</option>
-      <option value="user">User</option>
-      <option value="admin">Admin</option>
-    </select>
-  </div>
-  <button type="submit" class="btn btn-custom">Login</button>
-</form>
-
-  <% if (error) { %>
-    <p style="color:red;"><%= error %></p>
-  <% } %>
-</form>
-
-
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" placeholder="Enter username" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Enter password" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Login As</label>
+        <select name="role" class="form-control" required>
+          <option value="" disabled selected>Select Role</option>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
       <button type="submit" class="btn btn-custom">Login</button>
-       <% if (error) { %>
-    <p style="color:red;"><%= error %></p>
-  <% } %>
+
+      <% if (error) { %>
+        <p style="color:red; text-align:center; margin-top: 10px;"><%= error %></p>
+      <% } %>
     </form>
 
     <p class="register-link mt-3">
       Don’t have an account? <a href="/register">Register here</a>
-      <% if (typeof success !== 'undefined' && success == 1) { %>
-  <script>alert("Registration successful!");</script>
-<% } %>
-
     </p>
+
+    <% if (typeof success !== 'undefined' && success == 1) { %>
+      <script>alert("Registration successful!");</script>
+    <% } %>
   </div>
 </body>
 </html>
