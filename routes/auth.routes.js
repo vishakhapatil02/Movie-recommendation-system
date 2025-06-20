@@ -19,8 +19,10 @@ router.get('/indexpage', authController.gethome);
 router.get('/home', authController.IndexPage);
 
 // Admin Dashboard (Protected)
-router.get('/admin/dashboard', authController.getdashboard);
+router.get('/admin/dashboard', authController.getAdminDashboard);
+router.get('/user/dashboard', authController.getUserDashboard);
 
+router.get('/',(req, res) => res.redirect('login'));
 // Redirect root to /indexpage
 router.get('/', (req, res) => res.redirect('/indexpage'));
 
@@ -41,6 +43,23 @@ router.get('/user/dashboard', (req, res) => {
     const decoded = jwt.verify(token, SECRET_KEY);
     if (decoded.role === 'USER') {
       res.render('user_dashboard/dashboard', { username: decoded.username });
+    } else {
+      res.redirect('/login');
+    }
+  } catch (err) {
+    res.clearCookie('token');
+    res.redirect('/login');
+  }
+});
+// Admin dashboard route
+router.get('/admin/dashboard', (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.redirect('/login');
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    if (decoded.role === 'ADMIN') {
+      res.render('admin_dashboard/dashboard', { username: decoded.username });
     } else {
       res.redirect('/login');
     }

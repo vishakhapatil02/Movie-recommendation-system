@@ -106,51 +106,82 @@ exports.postlogin = (req, res) => {
     return res.render('login', { error: "Username and password are required." });
   }
 
-  // ✅ Hardcoded Admin Login
+  // Admin login
   if (username === 'admin' && password === 'admin123') {
     const token = jwt.sign({ username: 'admin', role: 'ADMIN' }, SECRET_KEY, { expiresIn: '1h' });
     res.cookie('token', token, { httpOnly: true });
     return res.redirect('/admin/dashboard');
   }
 
-  // ✅ DB-based login for all users
-  const sql = "SELECT * FROM users WHERE username = ?";
-  db.query(sql, [username], async (err, results) => {
-    if (err) {
-      console.error("DB error:", err);
-      return res.render('login', { error: "Database error." });
-    }
-
-    if (results.length === 0) {
-      return res.render('login', { error: "Invalid username or password." });
-    }
+  // User login
+  const userSql = "SELECT * FROM users WHERE username = ?";
+  db.query(userSql, [username], (err, results) => {
+    if (err) return res.render('login', { error: "Database error." });
+    if (results.length === 0) return res.render('login', { error: "Invalid username or password." });
 
     const user = results[0];
-    const match = await bcrypt.compare(password, user.password);
 
-    if (!match) {
-      return res.render('login', { error: "Invalid username or password." });
-    }
+    bcrypt.compare(password, user.password, (err, match) => {
+      if (err || !match) {
+        return res.render('login', { error: "Invalid username or password." });
+      }
 
-    // ✅ Generate JWT token with role info
-    const token = jwt.sign(
-      { id: user.user_id, username: user.username, role: user.role },
-      SECRET_KEY,
-      { expiresIn: '1h' }
-    );
+      const token = jwt.sign(
+        { id: user.user_id, username: user.username, role: user.role },
+        SECRET_KEY,
+        { expiresIn: '1h' }
+      );
 
-    res.cookie('token', token, { httpOnly: true });
+      res.cookie('token', token, { httpOnly: true });
 
-    // ✅ Redirect based on user role
-    if (user.role === 'ADMIN') {
-      return res.redirect('/admin/dashboard');
-    } else if (user.role === 'USER') {
-      return res.redirect('/user/dashboard');
-    } else {
-      return res.render('login', { error: "Unknown role. Access denied." });
-    }
+      if (user.role === 'ADMIN') {
+        return res.redirect('/admin/dashboard');
+      } else {
+        return res.redirect('/user/dashboard');
+      }
+    });
   });
 };
+
+// =================== User Dashboard ===================
+
+exports.getUserDashboard = (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.redirect('/login');
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    if (decoded.role === 'USER') {
+      res.render('user_dashboard/dashboard', { username: decoded.username });
+    } else {
+      res.redirect('/login');
+    }
+  } catch (err) {
+    res.clearCookie('token');
+    res.redirect('/login');
+  }
+};
+
+// GET: Admin Dashboard Page (Protected)
+exports.getAdminDashboard = (req, res) => {  // ✅ FIXED NAME
+  const token = req.cookies.token;
+  if (!token) return res.redirect('/login');
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    if (decoded.role === 'ADMIN') {
+      res.render('admin_dashboard/dashboard', { username: decoded.username });  // ✅ Ensure this file exists
+    } else {
+      res.redirect('/login');
+    }
+  } catch (err) {
+    res.clearCookie('token');
+    res.redirect('/login');
+  }
+};
+
+// =================== Movie Management ===================
+
 
 exports.createMovie = (req, res) => {
   const data = req.body;
