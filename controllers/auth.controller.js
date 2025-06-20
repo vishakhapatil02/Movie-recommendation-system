@@ -162,6 +162,7 @@ exports.getUserDashboard = (req, res) => {
   }
 };
 
+
 // GET: Admin Dashboard Page (Protected)
 exports.getAdminDashboard = (req, res) => {  // ✅ FIXED NAME
   const token = req.cookies.token;
