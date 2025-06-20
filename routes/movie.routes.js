@@ -1,26 +1,28 @@
  const express = require('express');
 const router = express.Router();
 const movieController = require('../controllers/movie.controller');
-const upload = require('../middleware/multer'); // ✅ Use the existing multer config
+const userController = require('../controllers/user.controller');
+const upload = require('../middleware/multer');
 
-// Main movie routes
+// Authentication routes
+router.get('/login', userController.getlogin);
+router.post('/login', userController.postlogin);
+router.get('/register', userController.getregister);
+router.post('/register', userController.postregister);
+router.get('/logout', userController.logout);
+router.get('/home', userController.gethome);
+router.get('/index', userController.IndexPage);
+
+// Admin routes
+router.get('/dashboard', userController.getdashboard);
 router.get('/movies', movieController.listMovies);
-router.get('/admin/movies/create', movieController.showCreateForm);
-router.post('/admin/movies', upload.single('poster'), movieController.createMovie);
-router.get('/admin/movies/:id', movieController.showMovie);
-router.get('/admin/movies/:id/edit', movieController.showEditForm);
-router.post('/admin/movies/:id', upload.single('poster'), movieController.updateMovie);
-router.post('/admin/movies/:id/delete', movieController.deleteMovie);
+router.post('/movies', upload.single('poster'), movieController.createMovie);
+router.get('/movies/:id', movieController.showMovie);
+router.get('/movies/:id/edit', movieController.showEditForm);
+router.post('/movies/:id', upload.single('poster'), movieController.updateMovie);
+router.post('/movies/:id/delete', movieController.deleteMovie);
 
-// Route to show add form
-router.get('/add', (req, res) => {
-  res.render('movies/add');
-});
-
-// Route to handle form submission (for test/demo)
-router.post('/add', upload.single('poster'), (req, res) => {
-  console.log(req.file);  // ✅ Uploaded file info
-  res.send("Movie uploaded!");
-});
+// User routes
+router.get('/user/dashboard', userController.getUserDashboard);
 
 module.exports = router;

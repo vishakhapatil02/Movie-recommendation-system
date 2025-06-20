@@ -49,11 +49,10 @@ exports.logout = (req, res) => {
 // =================== POST Routes ===================
 
 // POST: Register user
-exports.postregister = async (req, res) => {
+ exports.postregister = async (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const email = req.body.email?.trim();
   const password = req.body.password?.trim();
-  const role = req.body.role?.toUpperCase();
 
   if (!username || !email || !password) {
     return res.send("All fields are required.");
@@ -82,11 +81,13 @@ exports.postregister = async (req, res) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const insertSql = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
-      db.query(insertSql, [username, email, hashedPassword, 'role'], (err) => {
+      db.query(insertSql, [username, email, hashedPassword, 'USER'], (err) => {
         if (err) {
           console.error("DB insert error:", err);
           return res.send("Registration failed.");
         }
+
+        // Redirect to login after successful registration
         res.redirect('/login');
       });
     } catch (err) {
@@ -100,54 +101,108 @@ exports.postregister = async (req, res) => {
 exports.postlogin = (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const password = req.body.password?.trim();
-  const role = req.body.role?.toUpperCase(); 
 
-  if (!username || !password || !role) {
-    return res.render('login', { error: "Username, password, and role are required." });
+  if (!username || !password) {
+    return res.render('login', { error: "Username and password are required." });
   }
 
-  // Admin hardcoded login
+  // Admin login
   if (username === 'admin' && password === 'admin123') {
     const token = jwt.sign({ username: 'admin', role: 'ADMIN' }, SECRET_KEY, { expiresIn: '1h' });
     res.cookie('token', token, { httpOnly: true });
     return res.redirect('/admin/dashboard');
   }
 
-  const sql = "SELECT * FROM users WHERE username = ?";
-  db.query(sql, [username], async (err, results) => {
-    if (err) {
-      console.error("DB error:", err);
-      return res.render('login', { error: "Database error." });
-    }
-
-    if (results.length === 0) {
-      return res.render('login', { error: "Invalid username or password." });
-    }
+  // User login
+  const userSql = "SELECT * FROM users WHERE username = ?";
+  db.query(userSql, [username], (err, results) => {
+    if (err) return res.render('login', { error: "Database error." });
+    if (results.length === 0) return res.render('login', { error: "Invalid username or password." });
 
     const user = results[0];
-    const match = await bcrypt.compare(password, user.password);
 
-    if (!match) {
-      return res.render('login', { error: "Invalid username or password." });
-    }
+    bcrypt.compare(password, user.password, (err, match) => {
+      if (err || !match) {
+        return res.render('login', { error: "Invalid username or password." });
+      }
 
-    const token = jwt.sign(
-      { id: user.user_id, username: user.username, role: user.role },
-      SECRET_KEY,
-      { expiresIn: '1h' }
-    );
+      const token = jwt.sign(
+        { id: user.user_id, username: user.username, role: user.role },
+        SECRET_KEY,
+        { expiresIn: '1h' }
+      );
 
-    res.cookie('token', token, { httpOnly: true });
+      res.cookie('token', token, { httpOnly: true });
 
-    // Redirect based on role
-    if (user.role === 'ADMIN') {
-      return res.redirect('/admin/dashboard');
+      if (user.role === 'ADMIN') {
+        return res.redirect('/admin/dashboard');
+      } else {
+        return res.redirect('/user/dashboard');
+      }
+    });
+  });
+};
+
+// =================== User Dashboard ===================
+
+exports.getUserDashboard = (req, res) => {
+  const token = req.cookies.token;
+  if (!token) return res.redirect('/login');
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    if (decoded.role === 'USER') {
+      res.render('user_dashboard/dashboard', { username: decoded.username });
     } else {
-      return res.render('admin_dashboard/dashboard', {
-        title: 'Movies',
-        username: user.username,
-        role: user.role
-      });
+      res.redirect('/login');
     }
+  } catch (err) {
+    res.clearCookie('token');
+    res.redirect('/login');
+  }
+};
+
+
+// GET: Admin Dashboard Page (Protected)
+exports.getAdminDashboard = (req, res) => {  // ✅ FIXED NAME
+  const token = req.cookies.token;
+  if (!token) return res.redirect('/login');
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    if (decoded.role === 'ADMIN') {
+      res.render('admin_dashboard/dashboard', { username: decoded.username });  // ✅ Ensure this file exists
+    } else {
+      res.redirect('/login');
+    }
+  } catch (err) {
+    res.clearCookie('token');
+    res.redirect('/login');
+  }
+};
+
+// =================== Movie Management ===================
+
+
+exports.createMovie = (req, res) => {
+  const data = req.body;
+
+  const poster = req.file ? `/uploads/${req.file.filename}` : null;
+
+  const movieData = {
+    ...data,
+    poster_url: poster
+  };
+
+  console.log("Movie Data Received from Form:", movieData); // 🐞 Debug log
+
+  Movie.create(movieData, (err, result) => {
+    if (err) {
+      console.error("Movie Insert Error:", err); // Log DB error
+      return res.status(500).send("Error inserting movie into database.");
+    }
+
+    // ✅ Redirect to view-movies anchor after successful insert
+    res.redirect('/admin/movies#view-movies');
   });
 };

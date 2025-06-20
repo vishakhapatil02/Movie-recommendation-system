@@ -363,6 +363,14 @@
                             <th>Description</th>
                             <th>Trailer URL</th>
                             <th>Actions</th>
+
+                            <% movies.forEach(movie => { %>
+    <tr>
+      <td><%= movie.title %></td>
+      <td><%= movie.genre %></td>
+      <td><img src="<%= movie.poster_url %>" width="50" /></td>
+    </tr>
+  <% }) %>
                         </tr>
                     </thead>
                     <tbody>
