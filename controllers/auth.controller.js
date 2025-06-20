@@ -53,6 +53,7 @@ exports.postregister = async (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const email = req.body.email?.trim();
   const password = req.body.password?.trim();
+  const role = req.body.role?.toUpperCase();
 
   if (!username || !email || !password) {
     return res.send("All fields are required.");
@@ -81,7 +82,7 @@ exports.postregister = async (req, res) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const insertSql = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
-      db.query(insertSql, [username, email, hashedPassword, 'USER'], (err) => {
+      db.query(insertSql, [username, email, hashedPassword, 'role'], (err) => {
         if (err) {
           console.error("DB insert error:", err);
           return res.send("Registration failed.");
@@ -99,9 +100,10 @@ exports.postregister = async (req, res) => {
 exports.postlogin = (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const password = req.body.password?.trim();
+  const role = req.body.role?.toUpperCase(); 
 
-  if (!username || !password) {
-    return res.render('login', { error: "Username and password are required." });
+  if (!username || !password || !role) {
+    return res.render('login', { error: "Username, password, and role are required." });
   }
 
   // Admin hardcoded login

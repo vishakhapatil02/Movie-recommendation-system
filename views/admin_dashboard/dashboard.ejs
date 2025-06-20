@@ -173,6 +173,7 @@
     <div id="sidebar">
         <div class="sidebar-header py-3 px-4">
             <h5 class="mb-0">Admin Dashboard</h5>
+            <h6><a href="user_dashboard">User Dashboard</a></h6>
         </div>
         <hr class="sidebar-divider my-0">
         <div class="sidebar-menu">
@@ -219,13 +220,6 @@
 
     <!-- Main Content -->
     <div id="main-content" class="p-4">
-        <% if (typeof success !== 'undefined') { %>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    ✅ Movie added successfully!
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-<% } %>
-
         <!-- Toast Notifications -->
         <div class="toast-container">
             <div class="toast align-items-center text-white bg-success" role="alert" aria-live="assertive" aria-atomic="true" id="successToast">
@@ -260,7 +254,6 @@
             <div class="tab-pane fade show active" id="add-movie" role="tabpanel">
                 <div class="card mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        
                         <h6 class="m-0 font-weight-bold text-primary">Add New Movie</h6>
                     </div>
                     <div class="card-body">
@@ -373,8 +366,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Movie data will be dynamically populated here -->
-                         
                     </tbody>
                 </table>
             </div>
@@ -383,7 +374,7 @@
 </div>
 
 
-            <!-- View Users Tab -->
+           <!-- View Users Tab -->
             <div class="tab-pane fade" id="view-users" role="tabpanel">
                 <div class="card mb-4">
                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
