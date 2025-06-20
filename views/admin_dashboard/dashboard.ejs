@@ -734,5 +734,41 @@
             }
         });
     </script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/api/users')
+    .then(res => res.json())
+    .then(users => {
+      const tbody = document.querySelector("#usersTable tbody");
+      tbody.innerHTML = ""; // Clear placeholder data
+
+      users.forEach(user => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+          <td><img src="https://via.placeholder.com/40" class="rounded-circle" alt="Avatar" style="width: 40px; height: 40px;"></td>
+          <td>${user.username}</td>
+          <td>${user.email}</td>
+          <td>${new Date(user.created_at).toLocaleDateString()}</td>
+          <td><span class="badge bg-success">Active</span></td>
+          <td>
+            <button class="btn btn-sm btn-info me-1"><i class="fas fa-eye"></i></button>
+            <button class="btn btn-sm btn-warning me-1"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-danger"><i class="fas fa-ban"></i></button>
+          </td>
+        `;
+
+        tbody.appendChild(row);
+      });
+    })
+    .catch(err => {
+      console.error("Failed to load users:", err);
+    });
+});
+</script>
+
 </body>
 </html>
