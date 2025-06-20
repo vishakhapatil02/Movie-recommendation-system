@@ -5,7 +5,13 @@ const db = require('../config/db.config');
 exports.listMovies = (req, res) => {
   Movie.findAll((err, results) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.render('admin/movie/index', { movies: results });
+
+    // Rendering your admin dashboard with movies table
+    res.render('admin_dashboard/dashboard', {
+      movies: results,
+      success: req.query.success || null,
+      activeTab: 'view-movies'
+    });
   });
 };
 
