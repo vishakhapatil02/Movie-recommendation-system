@@ -4,9 +4,10 @@ const db = require('../config/db.config');
 // View all movies
 exports.listMovies = (req, res) => {
   Movie.findAll((err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-
-    // Rendering your admin dashboard with movies table
+    if (err) {
+      console.error('DB Error:', err);
+      return res.status(500).send("Failed to load movies.");
+    }
     res.render('admin_dashboard/dashboard', {
       movies: results,
       success: req.query.success || null,

@@ -49,11 +49,10 @@ exports.logout = (req, res) => {
 // =================== POST Routes ===================
 
 // POST: Register user
-exports.postregister = async (req, res) => {
+ exports.postregister = async (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const email = req.body.email?.trim();
   const password = req.body.password?.trim();
-  const role = req.body.role?.toUpperCase();
 
   if (!username || !email || !password) {
     return res.send("All fields are required.");
@@ -82,11 +81,13 @@ exports.postregister = async (req, res) => {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const insertSql = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
-      db.query(insertSql, [username, email, hashedPassword, 'role'], (err) => {
+      db.query(insertSql, [username, email, hashedPassword, 'USER'], (err) => {
         if (err) {
           console.error("DB insert error:", err);
           return res.send("Registration failed.");
         }
+
+        // Redirect to login after successful registration
         res.redirect('/login');
       });
     } catch (err) {
@@ -100,17 +101,16 @@ exports.postregister = async (req, res) => {
 exports.postlogin = (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const password = req.body.password?.trim();
-  const role = req.body.role?.toUpperCase(); 
 
-  if (!username || !password || !role) {
-    return res.render('login', { error: "Username, password, and role are required." });
+  if (!username || !password) {
+    return res.render('login', { error: "Username and password are required." });
   }
 
   // Admin hardcoded login
   if (username === 'admin' && password === 'admin123') {
     const token = jwt.sign({ username: 'admin', role: 'ADMIN' }, SECRET_KEY, { expiresIn: '1h' });
     res.cookie('token', token, { httpOnly: true });
-    return res.redirect('/admin/dashboard');
+    return res.redirect("/admin/dashboard");
   }
 
   const sql = "SELECT * FROM users WHERE username = ?";
@@ -143,14 +143,11 @@ exports.postlogin = (req, res) => {
     if (user.role === 'ADMIN') {
       return res.redirect('/admin/dashboard');
     } else {
-      return res.render('admin_dashboard/dashboard', {
-        title: 'Movies',
-        username: user.username,
-        role: user.role
-      });
+      return res.redirect('/admin/movies'); // or any user dashboard path
     }
   });
 };
+
 exports.createMovie = (req, res) => {
   const data = req.body;
 
