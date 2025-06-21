@@ -682,87 +682,109 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    <script>
-        $(document).ready(function() {
-            // Sidebar toggle functionality
-            $('#sidebarToggle').click(function() {
-                $('#sidebar').toggleClass('collapsed');
-                $('#main-content').toggleClass('expanded');
-            });
+<script>
+    // Utility functions for loading and toast (add these if not present)
+    function showLoading() {
+        $('#loadingSpinner').show();
+    }
+    function hideLoading() {
+        $('#loadingSpinner').hide();
+    }
+    function showSuccessToast(msg) {
+        $('#successToast .toast-body').text(msg);
+        var toast = new bootstrap.Toast(document.getElementById('successToast'));
+        toast.show();
+    }
+    function showErrorToast(msg) {
+        $('#errorToast .toast-body').text(msg);
+        var toast = new bootstrap.Toast(document.getElementById('errorToast'));
+        toast.show();
+    }
 
-            // Tab navigation
-            $('[data-tab]').click(function(e) {
-                e.preventDefault();
-                const tabId = $(this).data('tab');
-                $('.tab-pane').removeClass('show active');
-                $('#' + tabId).addClass('show active');
-                
-                // Update active state in sidebar
-                $('.sidebar-link').removeClass('active');
-                $(this).addClass('active');
-                
-                // Show loading spinner
-                showLoading();
-                
-                // Simulate loading data
-                setTimeout(function() {
-                    hideLoading();
-                }, 1000);
-            });
+    $(function() {
+        // Sidebar toggle functionality
+        $(document).on('click', '#sidebarToggle', function() {
+            $('#sidebar').toggleClass('collapsed');
+            $('#main-content').toggleClass('expanded');
+        });
 
-            // Show poster preview
-            $('#poster').change(function() {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#posterPreview').attr('src', e.target.result).show();
-                    }
-                    reader.readAsDataURL(file);
+        // Tab navigation (event delegation)
+        $(document).on('click', '[data-tab]', function(e) {
+            e.preventDefault();
+            const tabId = $(this).data('tab');
+            $('.tab-pane').removeClass('show active');
+            $('#' + tabId).addClass('show active');
+            
+            // Update active state in sidebar
+            $('.sidebar-link').removeClass('active');
+            $(this).addClass('active');
+            
+            // Show loading spinner
+            showLoading();
+            
+            // Simulate loading data
+            setTimeout(function() {
+                hideLoading();
+            }, 1000);
+        });
+
+        // Show poster preview (event delegation for dynamic content)
+        $(document).on('change', '#poster', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#posterPreview').attr('src', e.target.result).show();
                 }
-            });
-
-            // Form validation
-            $('#addMovieForm').submit(function(e) {
-    e.preventDefault();
-    
-    let isValid = true;
-    $(this).find('[required]').each(function() {
-        if (!$(this).val()) {
-            $(this).addClass('is-invalid');
-            isValid = false;
-        } else {
-            $(this).removeClass('is-invalid');
-        }
-    });
-    
-    if (isValid) {
-        showLoading();
-        const formData = new FormData(this);
-        $.ajax({
-            url: '/movies/admin/movies',
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                hideLoading();
-                showSuccessToast('Movie added successfully!');
-                $('#addMovieForm')[0].reset();
-                $('#posterPreview').hide();
-                // Refresh View Movies tab
-                $('#view-movies').load(location.href + ' #view-movies > *');
-            },
-            error: function(xhr) {
-                hideLoading();
-                const errorMsg = xhr.responseText || 'Failed to add movie. Please try again.';
-                showErrorToast(errorMsg);
+                reader.readAsDataURL(file);
             }
         });
-    }
-});
+
+        // Form validation and AJAX submit (event delegation)
+        $(document).on('submit', '#addMovieForm', function(e) {
+            e.preventDefault();
+            let isValid = true;
+            $(this).find('[required]').each(function() {
+                if (!$(this).val()) {
+                    $(this).addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+            if (isValid) {
+                showLoading();
+                const formData = new FormData(this);
+                $.ajax({
+                    url: '/movies',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        hideLoading();
+                        showSuccessToast('Movie added successfully!');
+                        $('#addMovieForm')[0].reset();
+                        $('#posterPreview').hide();
+                        // Refresh View Movies tab
+                        $('#view-movies').load(location.href + ' #view-movies > *');
+                    },
+                    error: function(xhr) {
+                        hideLoading();
+                        const errorMsg = xhr.responseText || 'Failed to add movie. Please try again.';
+                        showErrorToast(errorMsg);
+                    }
+                });
+            }
         });
-    </script>
+
+        // Reset button handler (event delegation)
+        $(document).on('reset', '#addMovieForm', function() {
+            $(this).find('.is-invalid').removeClass('is-invalid');
+            $('#posterPreview').hide();
+        });
+    });
+</script>
 
 
 
