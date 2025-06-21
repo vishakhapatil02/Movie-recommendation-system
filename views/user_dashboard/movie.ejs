@@ -174,8 +174,8 @@
     </div>
 
    
-            <!-- Movies Tab -->
-<div class="tab-pane fade" id="movies" role="tabpanel">
+<!-- Movies Tab -->
+<div id="main-content" class="tab-pane fade show active" id="movies" role="tabpanel">
   <div class="card mb-4">
     <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-primary">🎬 Movie Collection</h6>
@@ -209,7 +209,7 @@
           </select>
         </div>
 
-        <!-- Year Range -->
+        <!-- Release Year -->
         <div class="col-md-3 mb-2">
           <label class="form-label">Release Year</label>
           <input type="range" class="form-range" min="1990" max="2025" value="2025">
@@ -242,29 +242,28 @@
 
       <!-- Movies Grid -->
       <div class="row">
-        <!-- Sample Movie Card -->
+        <!-- Movie Card -->
         <div class="col-md-4 mb-4">
           <div class="card h-100">
-            <img src="https://via.placeholder.com/300x400" class="card-img-top" alt="Movie Poster">
+            <img src="https://via.placeholder.com/300x400" class="card-img-top" alt="Movie Poster" loading="lazy">
             <div class="card-body">
               <h5 class="card-title">Inception</h5>
               <p class="mb-1"><strong>Genre:</strong> Sci-Fi | <strong>Language:</strong> English</p>
-              <p class="mb-1">
-                <strong>Rating:</strong>
-                ⭐⭐⭐⭐⭐ 9.0
-              </p>
+              <p class="mb-1"><strong>Rating:</strong> ⭐⭐⭐⭐⭐ 9.0</p>
               <p class="mb-1"><strong>Price:</strong> ₹199 (Rent)</p>
               <p class="text-muted">A mind-bending thriller that explores dream manipulation and subconscious heists.</p>
+              <a href="#" class="btn btn-sm btn-outline-primary mt-2"><i class="fas fa-plus"></i> Add to Watchlist</a>
             </div>
           </div>
         </div>
 
-        <!-- Add more movie cards similarly -->
+        <!-- Add more cards here dynamically using EJS if needed -->
       </div>
 
     </div>
   </div>
 </div>
+
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->

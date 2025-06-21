@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
+    <title>Frontend Developer: Today's Tasks</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
@@ -12,7 +12,7 @@
         :root {
             --sidebar-width: 250px;
             --navbar-height: 60px;
-            --primary-color: #4e73df;
+            --primary-color: Grey;
             --secondary-color: #858796;
         }
         
@@ -28,7 +28,7 @@
             position: fixed;
             left: 0;
             top: 0;
-            background: linear-gradient(180deg, var(--primary-color) 10%, #224abe 100%);
+            background: linear-gradient(180deg, var(--primary-color) 10%, #1c2950 100%);
             color: white;
             transition: all 0.3s;
             z-index: 1000;
@@ -50,16 +50,16 @@
         }
         
         #navbar {
-            height: var(--navbar-height);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1001;
-            background-color: white;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
-        }
-        
+    height: var(--navbar-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    background-color: #0b1a39; /* dark navy blue */
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(0, 0, 0, 0.3);
+}
+
         .sidebar-link {
             color: rgba(255, 255, 255, 0.8);
             padding: 1rem;
@@ -85,11 +85,6 @@
             border-radius: 0 0 0.35rem 0.35rem;
         }
         
-        .welcome-message {
-            margin-top: 40px; /* Adjust the value as needed */
-            text-align: center;
-        }
-        
         @media (max-width: 768px) {
             #sidebar {
                 margin-left: calc(-1 * var(--sidebar-width));
@@ -110,108 +105,564 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container-fluid">
-            <button class="btn btn-link text-dark" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-             <a class="navbar-brand ms-2 d-flex align-items-center" href="#" style="font-size: 1.5rem; font-weight: bold; color: #4e73df;">
-    <img src="/images/logofilmfussion.webp" alt="Logo" style="height: 35px; width: auto; margin-right: 8px;">
-    <span><i>FILM<span style="color: rgb(20, 114, 25); font-weight: bold;">Fussion</span></i></span>
-</a>
+   <nav id="navbar" class="navbar navbar-expand-lg navbar-dark shadow-sm">
+  <div class="container-fluid">
+    <button class="btn btn-link text-light" id="sidebarToggle">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a class="navbar-brand ms-2 d-flex align-items-center" href="#" style="font-size: 1.5rem; font-weight: bold; color: #4e73df;">
+      <img src="/images/logofilmfussion.webp" alt="Logo" style="height: 35px; width: auto; margin-right: 8px;">
+      <span><i>FILM<span style="color: rgb(20, 114, 25); font-weight: bold;">Fussion</span></i></span>
+    </a>
+    <div class="d-flex align-items-center">
+      <div class="dropdown">
+        <button class="btn btn-link dropdown-toggle text-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user-circle fa-lg"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+          <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
 
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle fa-lg"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
 
     <!-- Sidebar -->
     <div id="sidebar">
         <div class="sidebar-header py-3 px-4">
-            <h5 class="mb-0">User Dashboard</h5>
+            <h5 class="mb-0"> User's Dashboard</h5>
         </div>
         <hr class="sidebar-divider my-0">
         <div class="sidebar-menu">
             <ul class="list-unstyled">
                 <li>
-                    <a href="#dashboard.ejs" class="sidebar-link active" data-tab="dashboard">
+                    <a href="#dashboard" class="sidebar-link active" data-tab="dashboard">
                         <i class="fas fa-tachometer-alt"></i> Dashboard Overview
                     </a>
                 </li>
                 <li>
-                    <a href="#movies.ejs" class="sidebar-link" data-tab="movies">
-                        <i class="fas fa-film"></i> 🎥 Movies
+                    <a href="#movies" class="sidebar-link" data-tab="movies">
+                        <i class="fas fa-film"></i> Movies
                     </a>
                 </li>
                 <li>
-                    <a href="#watchlist.ejs" class="sidebar-link" data-tab="watchlist">
-                        <i class="fas fa-clock"></i> 🗓 Watchlist
+                    <a href="#watchlist" class="sidebar-link" data-tab="watchlist">
+                        <i class="fas fa-clock"></i>  Watchlist
                     </a>
                 </li>
                 <li>
-                    <a href="#ratings.ejs" class="sidebar-link" data-tab="ratings">
-                        <i class="fas fa-star"></i> ⭐ Ratings & Reviews
+                    <a href="#ratings" class="sidebar-link" data-tab="ratings">
+                        <i class="fas fa-star"></i>  Ratings & Reviews
                     </a>
                 </li>
                 <li>
-                    <a href="#userProfile.ejs" class="sidebar-link" data-tab="user-profile">
-                        <i class="fas fa-user"></i> 👤 User Profile
+                    <a href="#userProfile" class="sidebar-link" data-tab="user-profile">
+                        <i class="fas fa-user"></i>  User Profile
                     </a>
                 </li>
                 <li>
-                    <a href="#logout.ejs" class="sidebar-link">
-                        <i class="fas fa-sign-out-alt"></i> 🚪 Logout
-                    </a>
-                </li>
+                    <a href="#" class="sidebar-link" data-tab="logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              </li>
+
             </ul>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div id="main-content" class="p-4">
-        <!-- Tab Content -->
-        <div class="tab-content" id="mainTabContent">
-            
-                   <!-- Dashboard Overview Tab -->
-<div class="tab-pane fade show active" id="dashboard" role="tabpanel">
-    <h4 class="mb-4 text-primary">👋 Welcome to Film Fusion!</h4>
+  <div id="main-content" class="p-4">
+    <div class="tab-content" id="mainTabContent">
+      <!-- Dashboard Overview -->
+      <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+        <br>
+        <br>
+        <h4 class="mb-4 text-primary">👋 Welcome to Film Fusion!</h4>
+        <div class="card mb-4">
+          <div class="card-body">
+            <p>This is your dashboard overview. Quick stats and recent activity appear here.</p>
+          </div>
+        </div>
+      </div>
+
+  <div class="tab-pane fade" id="movies" role="tabpanel">
+  <div class="card mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Movies </h6>
+    </div>
+    <div class="card-body">
+
+      <!-- Filters UI -->
+      <h5>Filters</h5>
+      <div class="row g-3 mb-4">
+        <div class="col-md-3">
+          <label class="form-label">Genre</label>
+          <select class="form-select">
+            <option selected>All</option>
+            <option>Action</option>
+            <option>Drama</option>
+            <option>Comedy</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Language</label>
+          <select class="form-select">
+            <option selected>All</option>
+            <option>English</option>
+            <option>Hindi</option>
+            <option>Spanish</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Release Year: <span id="yearRangeValue">2000 - 2025</span></label>
+          <input type="range" class="form-range" min="2000" max="2025" value="2025" oninput="document.getElementById('yearRangeValue').innerText = '2000 - ' + this.value">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Rating: <span id="ratingValue">5</span>★</label>
+          <input type="range" class="form-range" min="1" max="5" step="0.5" value="5" oninput="document.getElementById('ratingValue').innerText = this.value">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Actor</label>
+          <input type="text" class="form-control" placeholder="Actor Name">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Actress</label>
+          <input type="text" class="form-control" placeholder="Actress Name">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Director</label>
+          <input type="text" class="form-control" placeholder="Director Name">
+        </div>
+      </div>
+
+      
+
+      <!-- Movie Cards -->
+      <h5 class="mt-4">Movies</h5>
+      <div class="row" id="movieList">
+        <!-- Example Movie Card -->
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img src="images/inception.jpg" class="card-img-top" alt="Movie Poster">
+            <div class="card-body">
+              <h5 class="card-title">Inception</h5>
+              <p class="card-text text-muted">Sci-Fi | English</p>
+              <p>
+                ⭐⭐⭐⭐⭐ (5.0)<br>
+              </p>
+              <p class="card-text">A skilled thief is given a chance at redemption if he can successfully perform inception: planting an idea into a person's subconscious.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add more movie cards here -->
+         <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img src="images/ad3.jpg" class="card-img-top" alt="Movie Poster">
+            <div class="card-body">
+              <h5 class="card-title">Azad</h5>
+              <p class="card-text text-muted">hindi</p>
+              <p>
+                ⭐⭐⭐⭐⭐ (5.0)<br>
+              </p>
+              <p class="card-text">A skilled thief is given a chance at redemption if he can successfully perform inception: planting an idea into a person's subconscious.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Watchlist Page Tab -->
+<div class="tab-pane fade" id="watchlist" role="tabpanel">
+  <div class="card mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">🎬 Movie Watchlist</h6>
+    </div>
+    <div class="card-body">
+      <!-- Tabs -->
+      <ul class="nav nav-tabs mb-3" id="watchlistTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="watching-tab" data-bs-toggle="tab" data-bs-target="#watching" type="button" role="tab">✅ Currently Watching</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="toWatch-tab" data-bs-toggle="tab" data-bs-target="#toWatch" type="button" role="tab">🕒 To Watch</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="watched-tab" data-bs-toggle="tab" data-bs-target="#watched" type="button" role="tab">📽 Watched</button>
+        </li>
+      </ul>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Currently Watching -->
+        <div class="tab-pane fade show active" id="watching" role="tabpanel">
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <img src="/images/inception.jpg" class="card-img-top" alt="Movie Poster">
+                <div class="card-body">
+                  <h5 class="card-title">Inception</h5>
+                  <p class="text-muted">Status: Watching</p>
+                  <p class="text-muted">Added: 18 June 2025</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- To Watch -->
+<div class="tab-pane fade" id="toWatch" role="tabpanel">
+  <div class="row">
+
+    <!-- Movie 1 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="/images/interstellar.jpg" class="card-img-top" alt="Movie Poster">
+        <div class="card-body">
+          <h5 class="card-title">Interstellar</h5>
+          <p class="text-muted">Status: Planned</p>
+          <p class="text-muted">Added: 15 June 2025</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Movie 2 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="/images/sl2.jpg" class="card-img-top" alt="Movie Poster">
+        <div class="card-body">
+          <h5 class="card-title">School friends</h5>
+          <p class="text-muted">Status: Planned</p>
+          <p class="text-muted">Added: 18 June 2025</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Movie 3 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="/images/jaaranposter.jpg" class="card-img-top" alt="Movie Poster">
+        <div class="card-body">
+          <h5 class="card-title">Jaaran</h5>
+          <p class="text-muted">Status: Planned</p>
+          <p class="text-muted">Added: 19 June 2025</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add more movie cards as needed -->
+
+  </div>
+</div>
+
+
+        <!-- Watched -->
+        <div class="tab-pane fade" id="watched" role="tabpanel">
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <img src="/images/kesariposter.jpg" class="card-img-top" alt="Movie Poster">
+                <div class="card-body">
+                  <h5 class="card-title">Kesari2</h5>
+                  <p class="text-muted">Status: Watched</p>
+                  <p class="text-muted">Watched on: 10 June 2025</p>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Watchlist Page Tab -->
+<div class="tab-pane fade" id="watchlist" role="tabpanel">
+  <div class="card mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">🎬 Movie Watchlist</h6>
+    </div>
+    <div class="card-body">
+      <!-- Tabs -->
+      <ul class="nav nav-tabs mb-3" id="watchlistTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="watching-tab" data-bs-toggle="tab" data-bs-target="#watching" type="button" role="tab">✅ Currently Watching</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="toWatch-tab" data-bs-toggle="tab" data-bs-target="#toWatch" type="button" role="tab">🕒 To Watch</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="watched-tab" data-bs-toggle="tab" data-bs-target="#watched" type="button" role="tab">📽 Watched</button>
+        </li>
+      </ul>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Currently Watching -->
+        <div class="tab-pane fade show active" id="watching" role="tabpanel">
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <img src="https://via.placeholder.com/300x400" class="card-img-top" alt="Movie Poster">
+                <div class="card-body">
+                  <h5 class="card-title">Inception</h5>
+                  <p class="text-muted">Status: Watching</p>
+                  <p class="text-muted">Added: 18 June 2025</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- To Watch -->
+        <div class="tab-pane fade" id="toWatch" role="tabpanel">
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <img src="https://via.placeholder.com/300x400" class="card-img-top" alt="Movie Poster">
+                <div class="card-body">
+                  <h5 class="card-title">Interstellar</h5>
+                  <p class="text-muted">Status: Planned</p>
+                  <p class="text-muted">Added: 15 June 2025</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Watched -->
+        <div class="tab-pane fade" id="watched" role="tabpanel">
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <div class="card h-100">
+                <img src="https://via.placeholder.com/300x400" class="card-img-top" alt="Movie Poster">
+                <div class="card-body">
+                  <h5 class="card-title">The Dark Knight</h5>
+                  <p class="text-muted">Status: Watched</p>
+                  <p class="text-muted">Watched on: 10 June 2025</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Ratings & Reviews Tab Content -->
+<div class="tab-pane fade" id="ratings" role="tabpanel">
     <div class="card mb-4">
-            <!-- Bootstrap Bundle with Popper -->
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Ratings & Reviews</h6>
+        </div>
+        <div class="card-body">
+            <!-- Sub-tabs -->
+            <ul class="nav nav-tabs mb-3" id="ratingsTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="my-ratings-tab" data-bs-toggle="tab" data-bs-target="#my-ratings" type="button" role="tab">My Ratings</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="write-review-tab" data-bs-toggle="tab" data-bs-target="#write-review" type="button" role="tab">Write a Review</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pending-reviews-tab" data-bs-toggle="tab" data-bs-target="#pending-reviews" type="button" role="tab">Pending Reviews</button>
+                </li>
+            </ul>
+
+            <!-- Sub-tab content -->
+            <div class="tab-content" id="ratingsTabContent">
+                <!-- My Ratings -->
+                <div class="tab-pane fade show active" id="my-ratings" role="tabpanel">
+                    <ul class="list-group">
+                        <!-- Example item -->
+                        <li class="list-group-item">
+                            <strong>Movie Title:</strong> Interstellar <br>
+                            <span class="text-warning">★★★★★</span> - <em>2025-06-20</em><br>
+                            "Mind-blowing sci-fi experience!"
+                        </li>
+                        <!-- More ratings dynamically loaded -->
+                    </ul>
+                </div>
+
+                <!-- Write a Review -->
+                <div class="tab-pane fade" id="write-review" role="tabpanel">
+                    <form id="reviewForm" method="POST" action="/submit-review">
+                        <div class="mb-3">
+                            <label for="movieSelect" class="form-label">Select Movie</label>
+                            <select class="form-select" id="movieSelect" name="movie_id" required>
+                                <option selected disabled>-- Choose a movie --</option>
+                                <option value="1">Inception</option>
+                                <option value="2">The Matrix</option>
+                                <!-- Load from DB -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating</label>
+                            <select class="form-select" id="rating" name="rating" required>
+                                <option value="5">★★★★★</option>
+                                <option value="4">★★★★</option>
+                                <option value="3">★★★</option>
+                                <option value="2">★★</option>
+                                <option value="1">★</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reviewText" class="form-label">Review</label>
+                            <textarea class="form-control" id="reviewText" name="review" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+
+                <!-- Pending Reviews -->
+                <div class="tab-pane fade" id="pending-reviews" role="tabpanel">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Jagga jasoos
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Mere husband ki biwi
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        </li>
+                        <!-- Load dynamically from DB -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  <!-- User Profile Tab -->
+<div class="tab-pane fade" id="user-profile" role="tabpanel">
+  <div class="card mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">👤 User Profile</h6>
+    </div>
+    <div class="card-body">
+      <form>
+        <!-- Profile Picture Upload -->
+        <div class="mb-3 text-center">
+          <img src="https://via.placeholder.com/120" class="rounded-circle mb-2" alt="Profile Picture" width="120" height="120" id="avatarPreview">
+          <div class="mt-2">
+            <input type="file" class="form-control form-control-sm d-inline-block w-auto" id="avatarUpload" accept="image/*">
+          </div>
+        </div>
+
+        <!-- Name -->
+        <div class="mb-3">
+          <label for="userName" class="form-label">Name</label>
+          <input type="text" class="form-control" id="userName" value="sneha">
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="userEmail" class="form-label">Email</label>
+          <input type="email" class="form-control" id="userEmail" value="sneha.com">
+        </div>
+
+        <!-- Phone Number -->
+        <div class="mb-3">
+          <label for="userPhone" class="form-label">Phone Number (optional)</label>
+          <input type="tel" class="form-control" id="userPhone" placeholder="e.g. +91 9876543210">
+        </div>
+
+      
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Logout Tab -->
+<div class="tab-pane fade" id="logout" role="tabpanel">
+  <div class="card mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-danger">Logout</h6>
+    </div>
+    <div class="card-body text-center">
+      
+      <button class="btn btn-danger me-2" id="confirmLogout">Yes, Logout</button>
+      <button class="btn btn-secondary" data-tab="dashboard">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    <script>
-        $(document).ready(function() {
-            // Sidebar toggle functionality
-            $('#sidebarToggle').click(function() {
-                $('#sidebar').toggleClass('collapsed');
-                $('#main-content').toggleClass('expanded');
-            });
+   <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Sidebar toggle
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
 
-            // Tab navigation
-            $('[data-tab]').click(function(e) {
-                e.preventDefault();
-                const tabId = $(this).data('tab');
-                $('.tab-pane').removeClass('show active');
-                $('#' + tabId).addClass('show active');
-                
-                // Update active state in sidebar
-                $('.sidebar-link').removeClass('active');
-                $(this).addClass('active');
-            });
+    if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', function () {
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded');
+      });
+    }
+
+    // Tab switching
+    const tabLinks = document.querySelectorAll('[data-tab]');
+    tabLinks.forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const tabId = this.getAttribute('data-tab');
+
+        // Hide all tab panes
+        document.querySelectorAll('.tab-pane').forEach(tab => {
+          tab.classList.remove('show', 'active');
         });
-    </script>
+
+        // Show selected tab
+        const activeTab = document.getElementById(tabId);
+        if (activeTab) {
+          activeTab.classList.add('show', 'active');
+        }
+
+        // Update active class on sidebar links
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+          link.classList.remove('active');
+        });
+        this.classList.add('active');
+      });
+    });
+
+    // Logout confirmation
+    const logoutBtn = document.getElementById('confirmLogout');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function () {
+        window.location.href = '/logout'; // Your logout route
+      });
+    }
+  });
+</script>
+
+
 </body>
 </html>
