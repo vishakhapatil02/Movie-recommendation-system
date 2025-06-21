@@ -24,7 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Routes
 app.use('/', authRoutes);         // 
-app.use('/movies', movieRoutes); // 
+app.use('/', movieRoutes); // 
 
 
 

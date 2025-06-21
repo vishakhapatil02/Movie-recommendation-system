@@ -15,11 +15,11 @@ router.get('/index', userController.IndexPage);
 
 // Admin routes
 router.get('/dashboard', userController.getdashboard);
-router.get('/movies', movieController.listMovies);
+router.get('/movie', movieController.listMovies);
 router.post('/movies', upload.single('poster'), movieController.createMovie);
 router.get('/movies/:id', movieController.showMovie);
 router.get('/movies/:id/edit', movieController.showEditForm);
-router.post('/movies/:id', upload.single('poster'), movieController.updateMovie);
+router.post('admin/movies/:id', upload.single('poster'), movieController.updateMovie);
 router.post('/movies/:id/delete', movieController.deleteMovie);
 
 // User routes
