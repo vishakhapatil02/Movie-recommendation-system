@@ -348,8 +348,6 @@ exports.postregister = async (req, res) => {
 
 
 
-
-
 exports.postlogin = (req, res) => {
   const username = req.body.username?.trim().toLowerCase();
   const password = req.body.password?.trim();
