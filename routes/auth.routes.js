@@ -61,7 +61,7 @@ router.get('/admin/dashboard', (req, res) => {
     }
   } catch (err) {
     res.clearCookie('token');
-    res.redirect('/admin/dashboard');
+    res.redirect('/login');
   }
 });
 
