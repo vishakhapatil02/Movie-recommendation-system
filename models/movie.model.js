@@ -7,6 +7,7 @@ const Movie = {
 
     create: (movieData, callback) => {
         const {
+            movie_id,
             title,
             description,
             release_date,
@@ -21,9 +22,10 @@ const Movie = {
             trailer_url
         } = movieData;
         db.query(
-            `INSERT INTO movies (title, description, release_date, genre, director, language, country, budget, revenue, runtime, poster_url, trailer_url)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO movies (movie_id, title, description, release_date, genre, director, language, country, budget, revenue, runtime, poster_url, trailer_url)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
+                movie_id,
                 title,
                 description,
                 release_date,
@@ -42,7 +44,7 @@ const Movie = {
     },
 
     findById: (id, callback) => {
-        db.query('SELECT * FROM movies WHERE id = ?', [id], (err, results) => {
+        db.query('SELECT * FROM movies WHERE movie_id = ?', [id], (err, results) => {
             if (err) return callback(err, null);
             callback(null, results[0]);
         });
@@ -50,6 +52,7 @@ const Movie = {
 
     update: (id, movieData, callback) => {
         const {
+            movie_id,
             title,
             description,
             release_date,
@@ -64,8 +67,9 @@ const Movie = {
             trailer_url
         } = movieData;
         db.query(
-            `UPDATE movies SET title = ?, description = ?, release_date = ?, genre = ?, director = ?, language = ?, country = ?, budget = ?, revenue = ?, runtime = ?, poster_url = ?, trailer_url = ? WHERE id = ?`,
+            `UPDATE movies SET movie_id = ?, title = ?, description = ?, release_date = ?, genre = ?, director = ?, language = ?, country = ?, budget = ?, revenue = ?, runtime = ?, poster_url = ?, trailer_url = ? WHERE movie_id = ?`,
             [
+                movie_id,
                 title,
                 description,
                 release_date,
@@ -78,14 +82,14 @@ const Movie = {
                 runtime || null,
                 poster_url,
                 trailer_url || null,
-                id
+                movie_id
             ],
             callback
         );
     },
 
     delete: (id, callback) => {
-        db.query('DELETE FROM movies WHERE id = ?', [id], callback);
+        db.query('DELETE FROM movies WHERE movie_id = ?', [id], callback);
     }
 };
 
